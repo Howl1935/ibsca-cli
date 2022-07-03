@@ -106,3 +106,4 @@ dist
 ibsca-macos-x64.tar.gz
 
 bin/
+build/

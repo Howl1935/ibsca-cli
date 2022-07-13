@@ -3,37 +3,21 @@ const App = require("../utils/app.js");
 //import ora from 'ora';
 
 type Options = {
-  name: string;
-  upper: boolean | undefined;
+  fileName: string;
 };
 
-export const command: string = "run";
-export const desc: string = "run";
+export const command: string = "run <filename>";
+export const desc: string = "Usage: Validate, Secure, and Lint given file.";
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options({
       
     })
-    .positional("name", { type: "string", demandOption: true });
-
-
+    .positional("<fileName>", { type: "string", demandOption: true });
 
 
 export const handler =  async (argv: Arguments<Options>): Promise<void> => {
-
-
-
-
-  
- // const { name, upper } = argv;
-
-//   var runAll = new App();
-//   var result = runAll.runTerraformChecks();
-//   
-  
-
-
 
 
 
@@ -102,4 +86,3 @@ process.stdout.write(bubbles);
 };
 
 
-//~

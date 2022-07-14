@@ -1,5 +1,5 @@
 import { BaseLanguage } from '../BaseLanguage';
-import { validateCommands, lintCommands, secureCommands } from './commands'
+import { validateCommands, lintCommands, secureCommands, versions } from './commands'
 export class Terraform extends BaseLanguage{
     constructor(fileName: string) {
         super(fileName);
@@ -12,6 +12,8 @@ export class Terraform extends BaseLanguage{
             return lintCommands;
         }else if(check === 'secure'){
             return secureCommands;
+        }else if(check === 'versions'){
+            return versions;
         }else{
             return [];
         }

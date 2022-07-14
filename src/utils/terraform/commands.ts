@@ -4,23 +4,34 @@ export const validateCommands = []
 export const lintCommands = []
 export const secureCommands = [
     {
-      "command" : "npm",
-      "args" : ['list', '-g', '-depth', '0']
-    },
-    {
-      "command" : "git",
-      "args" : ['clone', 'https://github.com/Howl1935/customChecks.git']
-    },
-    {
         "command" : "checkov",
-        "args" : ['-f','--config-file', './customChecks/config/config.yml']
+        "args" : ['--config-file', './customChecks/config/config.yml']
     },
-    {
-        "command" : "rm",
-        "args" : ['-rf', 'customChecks']
-    },
-
   ]
 
   //grep -n '.' /customChecks/config/config.yml | cut -d '-' -f1
   //sed -i '6s/.*/    password: \'new_admin_pass\'/' /tmp/config.yml
+
+
+  export const versions = 
+  {
+    secure : {
+    "pkg" : "Checkov",
+    "version" : "2.1.45",
+    "command" : "checkov",
+    "args" : ['--version'],
+    "install" : "brew",
+    "installCommands": ['install', 'checkov'],
+    "resource": "https://www.checkov.io/1.Welcome/Quick%20Start.html"
+  },
+  validate : {
+    "pkg" : "TFlint",
+    "version" : "2.1.15",
+    "command" : "checkov",
+    "args" : ['--version'],
+    "install" : "brew",
+    "installCommands": ['install', 'checkov'],
+    "resource" : ""
+  }
+}
+  

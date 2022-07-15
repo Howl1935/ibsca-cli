@@ -16,12 +16,13 @@ If you have problems with python certificates on mac, navigate to your python di
 
 ## Overview
 
-Ibotta-cli is a nodejs CLI written in TypeScript and packaged with homebrew.
+Ibotta-cli is a nodejs CLI written in TypeScript and packaged with homebrew.  The goal is to create easily configurable "modules" for different static code analysis tools which can easily be swapped out for others in the future if the need arises.  Currently IBSCA will only support Terraform files however, another design goal is to leave room for supporting other languages.
+
 Here is a high level plan of the CLI.
 
 ```mermaid
 graph TB
-F{User} -- ibsca perform --> D
+F{User} -- ibsca run filename.tf --> D
 H{Cloud Infra Dev} --> E
 E(Custom Policies, Determined Checks) -->D
 D((IBSCA-CLI)) --> A[Validate]

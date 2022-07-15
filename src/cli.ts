@@ -2,7 +2,7 @@
 
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { version } from './utils/version';
+import { version } from './utils/utilIbscaVersion';
 import chalk from "chalk";
 // get current version of ibsca
  yargs.version(version)

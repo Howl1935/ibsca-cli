@@ -1,8 +1,10 @@
-import { BaseLanguage } from '../BaseLanguage';
-import { validateCommands, lintCommands, secureCommands, versions } from './commands'
+import { BaseLanguage } from '../BaseClass';
+import { validateCommands, lintCommands, secureCommands, versions, importantDirs } from './currentPackagesHub'
+
 export class Terraform extends BaseLanguage{
+    
     constructor(fileName: string) {
-        super(fileName);
+        super(fileName, importantDirs);
     }
     // This function is where we can list commands to run when this class is called upon.
     getCommandList(check: string){
@@ -16,7 +18,10 @@ export class Terraform extends BaseLanguage{
             return versions;
         }else{
             return [];
-        }
-        
+        }    
     }
+
+    
 }
+
+

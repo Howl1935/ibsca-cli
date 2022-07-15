@@ -6,9 +6,9 @@
 */
 
 //import class for language
-import { Terraform } from './terraform/Terraform';
+import { Terraform } from './languages/terraform/Terraform';
 
-export function commandHub(extType:number, fileName:string){
+export function languageClassCreator(extType:number, fileName:string){
     switch(extType){
         //terraform
         case 0:{

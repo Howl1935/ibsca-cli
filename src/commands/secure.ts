@@ -1,8 +1,8 @@
 import type { Arguments, CommandBuilder } from "yargs";
-import { extensionType } from '../utils/extensionType';
-import { commandHub } from '../utils/commandHub';
-import { makeMess, cleanMess } from '../utils/getChecks'
-import chalk from "chalk";
+import { extensionType } from '../utils/utilExtensionType';
+import { languageClassCreator } from '../utils/languageClassCreator';
+import { makeMess, cleanMess } from '../utils/repoDownload'
+import {red, white, green, blue, yellow} from '../utils/utilTextColors';
 
 type Options = {
   fileName: string;
@@ -37,27 +37,29 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
           if(extType === -1){
             errorMessage();
           }
-          // check if customChecks folder exists; if not create it
+          // check if customChecks folder exists; run command to pull from github
           makeMess();
 
-          // pass the extension type and fileName to commandHub to create a class with the correct module
-          const secureModule = commandHub(extType, fileName);
-          if(secureModule){
+          // pass the extension type and fileName to languageClassCreator to create a class with the correct module
+          const secureLanguageClass = languageClassCreator(extType, fileName);
+          if(secureLanguageClass){
             //validate that packages are installed.
-            if(secureModule.checkVersion("secure")){
+            if(secureLanguageClass.checkVersion("secure")){
               // if this passes we can run all checks.
-              await secureModule.secure();
+              await secureLanguageClass.secure();
             }else{
               errorMessage();
             }
+          }else{
+            errorMessage();
           }
         } 
       }
-      //cleanMess();
+      cleanMess();
       process.exit(0);
     };
     
     function errorMessage(){
-      process.stdout.write(chalk.red("Not a valid extension. \n"))
+      red("Not a valid extension.")
 
     }

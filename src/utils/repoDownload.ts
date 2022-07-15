@@ -5,7 +5,7 @@ const path = require('path');
 const cwd = process.cwd();
 const check = (file: string) => fs.existsSync(path.join(cwd, file));
 
-import { makeMessCommand, cleanMessCommand } from './utilCommands'
+import { makeMessCommand, cleanMessCommand } from './repoCommands'
 
 export async function makeMess(){
     if(check('customChecks')){
@@ -15,7 +15,6 @@ export async function makeMess(){
         // download customChecks
         const dl = spawn.sync(makeMessCommand[0].command, makeMessCommand[0].args, { stdio: 'inherit' });
     }
-
 }
 
 export async function cleanMess(){
@@ -24,8 +23,6 @@ export async function cleanMess(){
         const rm = spawn.sync(cleanMessCommand[0].command, cleanMessCommand[0].args, { stdio: 'inherit' });
 
         return;
-    }else{
-        // download customChecks
     }
 
 }

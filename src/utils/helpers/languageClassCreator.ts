@@ -6,12 +6,17 @@
 */
 
 //import class for language
-import { Terraform } from './languages/terraform/Terraform';
+import { Terraform } from '../../languages/terraform/Terraform';
+import { fileType } from './utilExtensionTypeQuestions';
 
 export function languageClassCreator(extType:number, fileName:string){
     switch(extType){
-        //terraform
         case 0:{
+            const response = fileType();
+            return new Terraform(fileName)
+        }
+        //terraform
+        case 1:{
             return new Terraform(fileName)
         }
         // here we can implement future extensions

@@ -1,5 +1,5 @@
-import { BaseLanguage } from '../BaseClass';
-import { validateCommands, lintCommands, secureCommands, versions, importantDirs } from './currentPackagesHub'
+import { BaseLanguage } from '../BaseClass.js';
+import { validateCommands, lintCommands, secureCommands, versions, importantDirs } from './currentPackagesHub.js'
 
 export class Terraform extends BaseLanguage{
     

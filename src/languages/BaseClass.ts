@@ -3,7 +3,7 @@ import spawn from 'cross-spawn'
 const yaml = require('js-yaml');
 const fs   = require('fs');
 const path = require('path');
-import {red, white, green, blue, yellow} from '../utilTextColors';
+import {red, white, green, blue, yellow} from '../utils/helpers/utilTextColors';
 
 
 /** Abstract class representing the base form of tested languages */
@@ -18,8 +18,19 @@ export abstract class BaseLanguage {
         this.importantDirs = importantDirs;
 }
 
-validate(){
-  // work in progress
+async validate(){
+   // need to edit yaml file and add filename
+   //this.editConfig('validate');
+   const commandList = this.getCommandList('validate');
+   green(`🗼 Running Validate for ${this.fileName}. It will take a while, please wait...`);
+  
+   for (let i = 0; i < commandList.length; i++) {
+     const { status, stdout } = spawn.sync(commandList[i].command, commandList[i].args, { stdio: 'inherit' });
+     if (status !== 0) {
+       continue
+     }
+ 
+ }
 }
 lint(){
   // work in progress

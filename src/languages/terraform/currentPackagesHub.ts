@@ -7,7 +7,7 @@
 import { checkov, checkovData, checkovDirs } from "./checkov/checkov"
 import { tflint, tflintData } from "./tflint/tflint"
 
-export const validateCommands = []
+export const validateCommands = tflint
 export const lintCommands = tflint
 export const secureCommands = checkov;
 

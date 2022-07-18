@@ -1,5 +1,5 @@
 import type { Arguments, CommandBuilder } from "yargs";
-const App = require("../utils/app.js");
+
 //import ora from 'ora';
 
 type Options = {

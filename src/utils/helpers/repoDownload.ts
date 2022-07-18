@@ -5,7 +5,7 @@ const path = require('path');
 const cwd = process.cwd();
 const check = (file: string) => fs.existsSync(path.join(cwd, file));
 
-import { makeMessCommand, cleanMessCommand } from './repoCommands'
+import { makeMessCommand, cleanMessCommand } from '../helpers/repoCommands'
 
 export async function makeMess(){
     if(check('customChecks')){

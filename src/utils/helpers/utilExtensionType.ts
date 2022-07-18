@@ -7,9 +7,13 @@
 // function to check extension type
 export function extensionType(extension:string){
     switch(extension){
-        case 'tf':{
+        case '.':{
             return 0;
         }
+        case 'tf':{
+            return 1;
+        }
+
         // here we can implement future extensions
         default: {
             return -1;

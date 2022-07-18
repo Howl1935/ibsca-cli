@@ -1,8 +1,8 @@
 import type { Arguments, CommandBuilder } from "yargs";
-import { extensionType } from '../utils/utilExtensionType';
-import { languageClassCreator } from '../utils/languageClassCreator';
-import { makeMess, cleanMess } from '../utils/repoDownload'
-import {red, white, green, blue, yellow} from '../utils/utilTextColors';
+import { extensionType } from '../utils/helpers/utilExtensionType';
+import { languageClassCreator } from '../utils/helpers/languageClassCreator';
+import { makeMess, cleanMess } from '../utils/helpers/repoDownload'
+import {red, white, green, blue, yellow} from '../utils/helpers/utilTextColors';
 
 type Options = {
   fileName: string;
@@ -22,9 +22,12 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
       
       // get the extension of the fileName
       let extension: string|undefined = fileName.split('.').pop();
-
+      // implement this later... its the functionality for seaching an entire directory
+      if(fileName === '.'){
+        const secureLanguageClass = languageClassCreator(0, fileName);
+      }
       // If fileName is not properly formatted to be an extension, alert user; otherwise continue
-      if(fileName.indexOf('.') === -1 || fileName.split('.')[0] === '' || fileName.split('.')[1] === ''){
+      else if(fileName.indexOf('.') === -1 || fileName.split('.')[0] === '' || fileName.split('.')[1] === ''){
         // not a valid fileName => .example || example. || . 
           errorMessage();
       }else{
@@ -55,7 +58,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
           }
         } 
       }
-      cleanMess();
+      //cleanMess();
       process.exit(0);
     };
     

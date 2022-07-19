@@ -2,8 +2,8 @@ import type { Arguments, CommandBuilder } from "yargs";
 import { extensionType } from '../utils/helpers/utilExtensionType';
 import { languageClassCreator } from '../utils/helpers/languageClassCreator';
 import { makeMess, cleanMess } from '../utils/helpers/repoDownload'
-import {red, white, green, blue, yellow} from '../utils/helpers/utilTextColors';
-
+import { red, white, green, blue, yellow } from '../utils/helpers/utilTextColors';
+import { getExtension } from '../utils/commandLineHelper'
 type Options = {
   fileName: string;
 };
@@ -17,52 +17,37 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
     })
     .positional("fileName", { type: "string", demandOption: true });
 
-    export const handler = async (argv: Arguments<Options>): Promise<void> => {
-      const { fileName } = argv;
-      
-      // get the extension of the fileName
-      let extension: string|undefined = fileName.split('.').pop();
-      // implement this later... its the functionality for seaching an entire directory
-      if(fileName === '.'){
-        const secureLanguageClass = languageClassCreator(0, fileName);
+export const handler = async (argv: Arguments<Options>): Promise<void> => {
+  const { fileName } = argv;
+  // helper function; returns a number representing the extension
+  const extension = getExtension(fileName);
+  let secureLanguageClass = null;
+  // if extension is valid; run checks
+  if (extension !== -1) {
+    // check if customChecks folder exists; run command to pull from github
+    makeMess();
+    // creates a language class based upon extension
+    secureLanguageClass = languageClassCreator(extension, fileName);
+    if (secureLanguageClass) {
+      //validate that packages are installed.
+      if (secureLanguageClass.checkVersion("secure")) {
+        // if this passes we can run all checks.
+        await secureLanguageClass.secure();
+      } else{
+        errorMessage("Secure function didn't work.");
       }
-      // If fileName is not properly formatted to be an extension, alert user; otherwise continue
-      else if(fileName.indexOf('.') === -1 || fileName.split('.')[0] === '' || fileName.split('.')[1] === ''){
-        // not a valid fileName => .example || example. || . 
-          errorMessage();
-      }else{
-        let extType : number = -1;
-        if(extension === undefined){
-          errorMessage();
-        }else{
-          // Validate extension type; will return a number e.g. 0 = terraform (.tf)
-          extType = extensionType(extension);
-          if(extType === -1){
-            errorMessage();
-          }
-          // check if customChecks folder exists; run command to pull from github
-          makeMess();
-
-          // pass the extension type and fileName to languageClassCreator to create a class with the correct module
-          const secureLanguageClass = languageClassCreator(extType, fileName);
-          if(secureLanguageClass){
-            //validate that packages are installed.
-            if(secureLanguageClass.checkVersion("secure")){
-              // if this passes we can run all checks.
-              await secureLanguageClass.secure();
-            }else{
-              errorMessage();
-            }
-          }else{
-            errorMessage();
-          }
-        } 
-      }
-      //cleanMess();
-      process.exit(0);
-    };
-    
-    function errorMessage(){
-      red("Not a valid extension.")
-
+    } else {
+      errorMessage("Invalid version.");
     }
+  } else {
+    errorMessage("Extension type was invalid.");
+  }
+  // remove cloned github repo
+  cleanMess();
+  //process.exit(0);
+};
+
+function errorMessage(err : string) {
+  red(`Not a valid extension. Failed at ${err}`)
+
+}

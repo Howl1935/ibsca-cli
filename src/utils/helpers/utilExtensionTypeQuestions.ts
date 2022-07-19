@@ -1,29 +1,27 @@
 import inquirer from "inquirer";
-// import { Answer, Choice, ProviderChoiceValue } from '../models/answer-choice'
+import { extensionType } from "./utilExtensionType";
 
-// export async function providerQuestion(): Promise<Answer> {
-//     const listOfFiles: Choice[] = [
-//         {name: 'Github', value: ProviderChoiceValue.GITHUB}
-//     ];
-//     return inquirer.prompt([{
-//         name: 'provider',
-//         type: 'list',
-//         message: 'Select a Git hosting provider',
-//         choices: listOfFiles
-//     }])
-// }
-export function fileType() {
-inquirer
+export async function fileType() {
+  const first = await goForIt();
+
+  return 0;
+
+}
+
+async function goForIt(){
+  const promise1 = await inquirer
   .prompt([
     {
       type: 'list',
       name: 'language',
-      message: 'Which language are you testing folder for?',
-      choices: ['Terraform', 'Unlisted'],
+      message: 'Which language extension are you testing folder for?',
+      choices: ['tf', 'Unlisted'],
     },
   ])
   .then(answers => {
     console.info('You selected:', answers.language);
-    return answers.language;
-    
-  });}
+    // make sure choices listed above corrolate to extensionType parser
+     console.log(extensionType(answers.language))
+        
+  });
+}

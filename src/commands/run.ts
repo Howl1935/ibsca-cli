@@ -1,5 +1,9 @@
 import type { Arguments, CommandBuilder } from "yargs";
-
+import { extensionType } from '../utils/helpers/utilExtensionType';
+import { languageClassCreator } from '../utils/helpers/languageClassCreator';
+import { makeMess, cleanMess } from '../utils/helpers/repoDownload'
+import { red, white, green, blue, yellow } from '../utils/helpers/utilTextColors';
+import { getExtension } from '../utils/commandLineHelper'
 //import ora from 'ora';
 
 type Options = {
@@ -19,70 +23,37 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 
 export const handler =  async (argv: Arguments<Options>): Promise<void> => {
 
-
-
-const {promisify} = require('util');
-const {exec} = require('child_process');
-const execAsync = promisify(exec);
-var bubbles = "";
-//const spinner = ora('Loading unicorns').start();
-const sequentialExecution :any = async (...commands : any) => {
-  if (commands.length === 0) {
-    return 0;
+  const { fileName } = argv;
+  // helper function; returns a number representing the extension
+  const extension = getExtension(fileName);
+  let LanguageClass = null;
+  // if extension is valid; run checks
+  if (extension !== -1) {
+    // check if customChecks folder exists; run command to pull from github
+    makeMess();
+    // creates a language class based upon extension
+    LanguageClass = languageClassCreator(extension, fileName);
+    if (LanguageClass) {
+      //validate that packages are installed.
+      if (LanguageClass.checkVersion("secure")) {
+        // if this passes we can run all checks.
+        await LanguageClass.validate();
+        await LanguageClass.secure();
+      } else{
+        errorMessage("Secure function didn't work.");
+      }
+    } else {
+      errorMessage("Invalid version.");
+    }
+  } else {
+    errorMessage("Extension type was invalid.");
   }
-  const {stderr, stdout} = await execAsync(commands.shift());
-  // if (stderr) {
-  //   throw stderr;
-  // }
-     console.log(`${stdout}`);
-     bubbles = stdout;
-
-     //console.error(`stderr: ${stderr}`);
-  return sequentialExecution(...commands);
-}
-
-// // Will execute the commands in series
-await sequentialExecution(
-  "git clone https://github.com/Howl1935/customChecks.git","checkov --config-file ./customChecks/config/config.yml", "rm -rf customChecks"
-//mkdir -p temp;git clone https://github.com/Howl1935/customChecks.git temp;
-//checkov --config-file ./temp/config/config.yml;
-);
-
-
-//spinner.stop();
-//const { exec } = require("child_process");
-
-
-//  exec("git clone https://github.com/Howl1935/customChecks.git", (error: { message: any; }, stdout: any, stderr: any)  =>  {
-//     if (error) {
-//         console.log(`error: ${error.message}`);
-//         return;
-//     }
-//     console.log(`stdout: ${stdout}`);
-
-//     console.error(`stderr: ${stderr}`);
-        
-    
-// });
-
-
-//process.stdout.write("done yet?");
-
-
-// await exec("checkov --config-file ./config.yml;cd ../..;rm -r customChecks", (error: { message: any; }, stdout: any, stderr: any)  =>  {
-//     if (error) {
-//         console.log(`error: ${error.message}`);
-//         return;
-//     }
-//     if (stderr) {
-//         console.log(`stderr: ${stderr}`);
-//         return;
-//     }
-//     console.log(`stdout: ${stdout}`);
-// });
-
-process.stdout.write(bubbles);
-//process.exit(0);
+  // remove cloned github repo
+  cleanMess();
+  //process.exit(0);
 };
 
+function errorMessage(err : string) {
+  red(`Not a valid extension. Failed at ${err}`)
 
+}

@@ -3,6 +3,8 @@ import { extensionType } from '../utils/helpers/utilExtensionType';
 import { languageClassCreator } from '../utils/helpers/languageClassCreator';
 import { makeMess, cleanMess } from '../utils/helpers/repoDownload'
 import {red, white, green, blue, yellow} from '../utils/helpers/utilTextColors';
+
+import { languageType } from '../utils/helpers/utilExtensionTypeQuestions'
 type Options = {
   fileName: string;
 };
@@ -18,6 +20,9 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 
     export const handler = async (argv: Arguments<Options>): Promise<void> => {
       const { fileName } = argv;
+
+      await languageType();
+      console.log('here!')
       // // get the extension of the fileName
       // let extension: string|undefined = fileName.split('.').pop();
       // // implement this later... its the functionality for seaching an entire directory
@@ -57,7 +62,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
       //   } 
       // }
       // //cleanMess();
-      process.exit(0);
+      //process.exit(0);
     };
     
     function errorMessage(){

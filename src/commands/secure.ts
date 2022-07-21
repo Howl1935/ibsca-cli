@@ -1,9 +1,9 @@
 import type { Arguments, CommandBuilder } from "yargs";
-import { extensionType } from '../utils/helpers/utilExtensionType';
 import { languageClassCreator } from '../utils/helpers/languageClassCreator';
 import { makeMess, cleanMess } from '../utils/helpers/repoDownload'
 import { red, white, green, blue, yellow } from '../utils/helpers/utilTextColors';
 import { getExtension } from '../utils/commandLineHelper'
+import { languageType } from "../utils/helpers/utilExtensionTypeQuestions";
 
 type Options = {
   fileName: string;
@@ -21,29 +21,30 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { fileName } = argv;
 
   // helper function; returns a number representing the extension or if its a dir
-  const extension = getExtension(fileName);
+  let extension = getExtension(fileName);
   let secureLanguageClass = null;
-  // get extension type and verify check can be run.
+
   // if extension is valid; run checks
   if (extension !== -1) {
-    // before continuing confirm that the file being checked exists
-    // if(extension !== 0  && !fileExists('./' + fileName)){
-    //   errorMessage("File does not exist.")
-    // }
-
-    // creates a language class based on extension
+    // Use inquirer to figure out what type of extension we are trying to search folder for
+    if(extension === 0){
+      extension = await languageType();
+      if(extension === -1){
+        errorMessage('Sorry, please try a specific file.')
+      }
+    }
+    // creates a language class based on extension    
     secureLanguageClass = languageClassCreator(extension, fileName);
     if (secureLanguageClass) {
       // if command was a directory check, validate that check can be run.
       if(extension === 0 && !secureLanguageClass.directoryCheck()){
-        errorMessage("Unable to run directory check.")
+        errorMessage("Unable to run directory check for this language.  Try a specific file instead.")
       }
       // if command was a file check, validate that check can be run      
       if(extension !== 0 && !secureLanguageClass.fileExists('./' + fileName)) {
         errorMessage("File does not exist.");
       }
 
-      
       // pull checks from github
       makeMess();      
       //validate that packages are installed.

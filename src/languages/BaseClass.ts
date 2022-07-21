@@ -90,7 +90,7 @@ checkVersion(vls : string) {
 }
 
 editConfig(vls : string){
-  const {configType} = this.data[vls];
+  const { configType } = this.data[vls];
 
   if(configType === ''){
     // no config file, nothing to worry about.
@@ -146,9 +146,9 @@ editConfig(vls : string){
  fileExists(path : string) : Boolean {
     return fs.existsSync(path);
  }
- 
+
  directoryCheck() : Boolean {
-  const {directorySearch} = this.data;
+  const { directorySearch } = this.data;
   return directorySearch;
  }
 

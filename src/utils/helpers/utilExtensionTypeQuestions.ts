@@ -1,15 +1,9 @@
 import inquirer from "inquirer";
 import { extensionType } from "./utilExtensionType";
 
-export async function fileType() {
-  const first = await goForIt();
 
-  return 0;
-
-}
-
-async function goForIt(){
-  const promise1 = await inquirer
+  export async function languageType() {
+   const result =  await inquirer
   .prompt([
     {
       type: 'list',
@@ -19,9 +13,11 @@ async function goForIt(){
     },
   ])
   .then(answers => {
-    console.info('You selected:', answers.language);
+    //console.info('You selected:', answers.language);
     // make sure choices listed above corrolate to extensionType parser
-     console.log(extensionType(answers.language))
+     //console.log()
+     return extensionType(answers.language)
         
   });
-}
+  return result;
+  }

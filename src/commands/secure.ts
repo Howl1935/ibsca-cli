@@ -4,10 +4,10 @@ import { languageClassCreator } from '../utils/helpers/languageClassCreator';
 import { makeMess, cleanMess } from '../utils/helpers/repoDownload'
 import { red, white, green, blue, yellow } from '../utils/helpers/utilTextColors';
 import { getExtension } from '../utils/commandLineHelper'
+
 type Options = {
   fileName: string;
 };
-
 // details for yargs run command
 export const command: string = "secure <fileName>";
 export const desc: string = "Runs Ibotta custom checks against current file.";
@@ -19,16 +19,33 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { fileName } = argv;
-  // helper function; returns a number representing the extension
+
+  // helper function; returns a number representing the extension or if its a dir
   const extension = getExtension(fileName);
   let secureLanguageClass = null;
+  // get extension type and verify check can be run.
   // if extension is valid; run checks
   if (extension !== -1) {
-    // check if customChecks folder exists; run command to pull from github
-    makeMess();
-    // creates a language class based upon extension
+    // before continuing confirm that the file being checked exists
+    // if(extension !== 0  && !fileExists('./' + fileName)){
+    //   errorMessage("File does not exist.")
+    // }
+
+    // creates a language class based on extension
     secureLanguageClass = languageClassCreator(extension, fileName);
     if (secureLanguageClass) {
+      // if command was a directory check, validate that check can be run.
+      if(extension === 0 && !secureLanguageClass.directoryCheck()){
+        errorMessage("Unable to run directory check.")
+      }
+      // if command was a file check, validate that check can be run      
+      if(extension !== 0 && !secureLanguageClass.fileExists('./' + fileName)) {
+        errorMessage("File does not exist.");
+      }
+
+      
+      // pull checks from github
+      makeMess();      
       //validate that packages are installed.
       if (secureLanguageClass.checkVersion("secure")) {
         // if this passes we can run all checks.
@@ -49,5 +66,6 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
 function errorMessage(err : string) {
   red(`Not a valid extension. Failed at ${err}`)
+  process.exit(0);
 
 }

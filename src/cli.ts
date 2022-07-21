@@ -20,6 +20,10 @@ yargs(hideBin(process.argv))
   .usage('Usage: $0 <command> [options]')
   .example('$0 run sample.tf', 'Validate, Secure, and Lint sample.tf')  
 
+  // Details for run command
+  .command('run', 'Run all SCA checks to ensure standard coding practices for Ibotta.')
+  .example('$0 run sample.tf', 'Run sample.tf to ensure standard coding practices.')  
+  
   // Details for validate command
   .command('validate', 'Only scan infrastructure to ensure standard coding practices for Ibotta.')
   .example('$0 validate sample.tf', 'Scan sample.tf to ensure standard coding practices.')  

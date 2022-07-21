@@ -36,3 +36,15 @@ export const tflintData = {
     "installCommands": ['install', 'tflint'],
     "resource" : "https://github.com/terraform-linters/tflint"
   }
+     // this will add put fileName into config file to test against.  We can later configure this to accept multiple files OR do entire folder recursively
+
+export const checkovDirs = {
+  "configType" : "yaml",
+  "configDir" : '/customChecks/config/config.yml',
+  "dirTitle" : 'directory',
+  "fileTitle" : 'file',
+  "directorySearch" : false
+}
+
+
+  

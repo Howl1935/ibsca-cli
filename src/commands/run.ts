@@ -10,21 +10,21 @@ type Options = {
   fileName: string;
 };
 
-export const command: string = "run <filename>";
+export const command: string = "run <fileName>";
 export const desc: string = "Usage: Validate, Secure, and Lint given file.";
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options({
-      
     })
-    .positional("<fileName>", { type: "string", demandOption: true });
+    .positional("f", { type: "string", demandOption: true });
 
 
 export const handler =  async (argv: Arguments<Options>): Promise<void> => {
 
   const { fileName } = argv;
   // helper function; returns a number representing the extension
+  console.log(fileName)
   const extension = getExtension(fileName);
   let LanguageClass = null;
   // if extension is valid; run checks

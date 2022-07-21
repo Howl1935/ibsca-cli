@@ -9,27 +9,29 @@ import {red, white, green, blue, yellow} from '../utils/helpers/utilTextColors';
 /** Abstract class representing the base form of tested languages */
 export abstract class BaseLanguage {
     fileName: string;
-    importantDirs: any
-    abstract getCommandList(check:string): any;
+    commands: any;
+    data: any;
+    //abstract getCommandList(check:string): any;
    // abstract editConfig(fileName:string): any;
 
-    constructor(fileName: string, importantDirs : any) {
+    constructor(fileName: string, commands:any, data:any) {
         this.fileName = fileName;
-        this.importantDirs = importantDirs;
+        this.commands = commands;
+        this.data = data;
 }
 
 async validate(){
    // need to edit yaml file and add filename
    //this.editConfig('validate');
-   const commandList = this.getCommandList('validate');
+   const { validate } = this.commands;
    green(`🗼 Running Validate for ${this.fileName}. It will take a while, please wait...`);
   
-   for (let i = 0; i < commandList.length; i++) {
-     const { status, stdout } = spawn.sync(commandList[i].command, commandList[i].args, { stdio: 'inherit' });
+   for (let i = 0; i < validate.length; i++) {
+     const { status, stdout } = spawn.sync(validate[i].command, validate[i].args, { stdio: 'inherit' });
      if (status !== 0) {
        continue
      }
- 
+    
  }
 }
 lint(){
@@ -41,11 +43,11 @@ lint(){
 async secure(){
   // need to edit yaml file and add filename
   this.editConfig('secure');
-  const commandList = this.getCommandList('secure');
+  const { secure } = this.commands;
   green(`🗼 Running Secure for ${this.fileName}. It will take a while, please wait...`);
 
-  for (let i = 0; i < commandList.length; i++) {
-    const { status, stdout } = spawn.sync(commandList[i].command, commandList[i].args, { stdio: 'inherit' });
+  for (let i = 0; i < secure.length; i++) {
+    const { status, stdout } = spawn.sync(secure[i].command, secure[i].args, { stdio: 'inherit' });
     if (status !== 0) {
       continue
     }
@@ -54,7 +56,9 @@ async secure(){
 }
 
 checkVersion(vls : string) {
-  const getPackageInfo = this.getCommandList('versions');
+  //const getPackageInfo = this.getCommandList('data');
+  const getPackageInfo = this.data;
+
   const info = getPackageInfo[vls];
   green(
     `🗼 Making sure ${info.pkg} version ${info.version} is installed. Please wait...`
@@ -86,14 +90,14 @@ checkVersion(vls : string) {
 }
 
 editConfig(vls : string){
-  const {configType} = this.importantDirs[vls];
+  const {configType} = this.data[vls];
 
   if(configType === ''){
     // no config file, nothing to worry about.
     
   }else if(configType === 'yaml'){
     // yaml config pass needed info
-    this.editYamlConfig(this.importantDirs[vls]);
+    this.editYamlConfig(this.data[vls]);
 
   }else if(configType === 'hcl'){
     // hcl config pass needed info
@@ -105,8 +109,8 @@ editConfig(vls : string){
 
 
 
- editYamlConfig(importantDirs: any){
-  const { configDir, dirTitle, fileTitle } = importantDirs;
+ editYamlConfig(data: any){
+  const { configDir, dirTitle, fileTitle } = data;
   // Get current working directory
   const cwd = process.cwd();
   const configDirectory = cwd + configDir
@@ -138,6 +142,15 @@ editConfig(vls : string){
     console.log(e);
   }
   }
+
+ fileExists(path : string) : Boolean {
+    return fs.existsSync(path);
+ }
+ 
+ directoryCheck() : Boolean {
+  const {directorySearch} = this.data;
+  return directorySearch;
+ }
 
 }
 

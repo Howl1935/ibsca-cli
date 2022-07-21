@@ -21,17 +21,13 @@ export const checkovData = {
     "args" : ['--version'],
     "install" : "brew",
     "installCommands": ['install', 'checkov'],
-    "resource": "https://www.checkov.io/1.Welcome/Quick%20Start.html"
+    "resource": "https://www.checkov.io/1.Welcome/Quick%20Start.html",
+    "configType" : "yaml",
+    "configDir" : '/customChecks/config/config.yml',
+    "dirTitle" : 'directory',
+    "fileTitle" : 'file',
+    "directorySearch" : false
   }
-
-   // this will add put fileName into config file to test against.  We can later configure this to accept multiple files OR do entire folder recursively
-
-export const checkovDirs = {
-  "configType" : "yaml",
-  "configDir" : '/customChecks/config/config.yml',
-  "dirTitle" : 'directory',
-  "fileTitle" : 'file'
-}
 
 
   

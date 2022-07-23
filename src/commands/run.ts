@@ -10,8 +10,8 @@ type Options = {
   fileName: string;
 };
 
-export const command: string = "run <fileName>";
-export const desc: string = "Usage: Validate, Secure, and Lint given file.";
+// export const command: string = "run <fileName>";
+// export const desc: string = "Usage: Validate, Secure, and Lint given file.";
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs

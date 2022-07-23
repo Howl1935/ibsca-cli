@@ -9,8 +9,8 @@ type Options = {
   fileName: string;
 };
 // details for yargs run command
-export const command: string = "secure <fileName>";
-export const desc: string = "Runs Ibotta custom checks against current file.";
+// export const command: string = "secure <fileName>";
+// export const desc: string = "Runs Ibotta custom checks against current file.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options({

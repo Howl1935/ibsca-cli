@@ -1,10 +1,8 @@
 import type { Arguments, CommandBuilder } from "yargs";
-import { languageClassCreator } from "../utils/helpers/languageClassCreator";
 import { makeMess, cleanMess } from "../utils/helpers/repoDownload";
-import { errorMessage } from "../utils/errorMessage";
-import { getExtension } from "../utils/commandLineHelper";
-import { languageType } from "../utils/helpers/utilExtensionTypeQuestions";
-import { checkHelper } from "./checkHelper";
+import { extensionChecker } from "./extensionChecker";
+import { languageClassCreator } from "../utils/helpers/languageClassCreator";
+import { classChecker } from "./classChecker";
 type Options = {
   fileName: string;
 };
@@ -19,20 +17,20 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { fileName } = argv;
   const vls = "secure";
-  const languageClass = await checkHelper(fileName, vls);
+  const extension = await extensionChecker(fileName)
+
+  // creates a language class based on extension
+  const languageClass = languageClassCreator(extension, fileName);
+  
   if (languageClass) {
     // pull checks from github
     makeMess();
     //validate that packages are installed.
-    if (languageClass.checkVersion(vls)) {
-      // if this passes we can run all checks.
+    if(classChecker(languageClass, fileName, extension, vls)){
       await languageClass.secure();
-    } else {
-      errorMessage("Secure function didn't work.");
     }
-
     // remove cloned github repo
     cleanMess();
     process.exit(0);
-  } 
+  }
 };

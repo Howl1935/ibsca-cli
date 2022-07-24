@@ -44,7 +44,7 @@ export abstract class BaseLanguage {
       }
     }
   }
-  lint() {
+  async lint() {
     yellow("LINT\n\n");
     // need to edit yaml file and add filename
     //this.editConfig('validate');

@@ -4,7 +4,7 @@ export function checkov(fName: string) {
   return [
     {
       command: "checkov",
-      args: ["--config-file", "./customChecks/config/config.yml"],
+      args: ["--config-file", "./customChecks/terraform/checkov/config/config.yml"],
     },
   ];
 }
@@ -21,5 +21,5 @@ export const checkovData = {
   configDir: "/customChecks/terraform/checkov/config/config.yml",
   dirTitle: "directory",
   fileTitle: "file",
-  directorySearch: false,
+  directorySearch: true,
 };

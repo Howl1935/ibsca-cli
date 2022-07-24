@@ -1,8 +1,8 @@
 import type { Arguments, CommandBuilder } from "yargs";
 import { makeMess, cleanMess } from "../utils/helpers/repoDownload";
-import { extensionChecker } from "./extensionChecker";
+import { extensionChecker } from "../utils/extensionChecker"
 import { languageClassCreator } from "../utils/helpers/languageClassCreator";
-import { classChecker } from "./classChecker";
+import { classChecker } from "../utils/classChecker";
 type Options = {
   fileName: string;
 };

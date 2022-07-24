@@ -6,7 +6,6 @@ const path = require("path");
 import {
   red,
   white,
-  green,
   blue,
   yellow,
 } from "../utils/helpers/utilTextColors";
@@ -21,16 +20,17 @@ export abstract class BaseLanguage {
   constructor(fileName: string, packages: any) {
     this.fileName = fileName;
     this.pkgData = packages;
-
   }
 
   async validate() {
-    yellow("VALIDATE\n\n");
+
     // need to edit yaml file and add filename
-    //this.editConfig('validate');
+    const vls = "validate";
+    if(this.pkgData[vls]){
+    this.editConfig(vls);
     const validate = this.pkgData["validate"].commands;
-    green(
-      `🗼 Running Validate for ${this.fileName}. It will take a while, please wait...`
+    blue(
+      `🗼 Validating ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
     );
 
     for (let i = 0; i < validate.length; i++) {
@@ -42,15 +42,18 @@ export abstract class BaseLanguage {
       if (status !== 0) {
         continue;
       }
+    }}else{
+      blue(`🗼 Validating... No plugin installed...\n`)
     }
   }
   async lint() {
-    yellow("LINT\n\n");
+    const vls = "lint";
     // need to edit yaml file and add filename
-    //this.editConfig('validate');
+    this.editConfig(vls);
+    if(this.pkgData[vls]){
     const lint = this.pkgData["lint"].commands;
-    green(
-      `🗼 Running Lint for ${this.fileName}. It will take a while, please wait...`
+    blue(
+      `🗼 Linting ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
     );
 
     for (let i = 0; i < lint.length; i++) {
@@ -60,18 +63,21 @@ export abstract class BaseLanguage {
       if (status !== 0) {
         continue;
       }
+    }}else{
+      blue(`🗼 Linting... No plugin installed...\n`)
     }
   }
 
   // This function is passed a list of objects which are command line commands.  We spawn synchronous processes
   // to run each of these commands sequentially.  The commands are defined within the corosponding language class.
   async secure() {
-    yellow("SECURE\n\n");
+    const vls = "secure";
+    if(this.pkgData[vls]){
     // need to edit yaml file and add filename
-    this.editConfig("secure");
+    this.editConfig(vls);
     const secure = this.pkgData["secure"].commands;
-    green(
-      `🗼 Running Secure for ${this.fileName}. It will take a while, please wait...`
+    blue(
+      `🗼 Securing ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
     );
 
     for (let i = 0; i < secure.length; i++) {
@@ -82,13 +88,14 @@ export abstract class BaseLanguage {
         continue;
       }
     }
+  }else{
+    blue(`🗼 Securing... No plugin installed...\n`)
   }
-
+  }
   checkVersion(vls: string) {
-    //const getPackageInfo = this.getCommandList('data');
     const pkgData = this.pkgData[vls].data;
 
-    green(
+    blue(
       `🗼 Making sure ${pkgData.pkg} version ${pkgData.version} is installed. Please wait...`
     );
     // check to see if package is installed on system
@@ -98,7 +105,7 @@ export abstract class BaseLanguage {
     // otherwise tell user to install manager
     if (!isInstalled) {
       red(`${pkgData.pkg} is not installed.`);
-      green(
+      blue(
         `Checking to see if ${pkgData.install} is installed on the system.`
       );
       const pmIsInstalled =
@@ -132,7 +139,6 @@ export abstract class BaseLanguage {
 
   editConfig(vls: string) {
     const { configType } = this.pkgData[vls].data;
-
     if (configType === "") {
       // no config file, nothing to worry about.
     } else if (configType === "yaml") {

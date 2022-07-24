@@ -6,7 +6,7 @@ import { Checkov } from "./checkov/Checkov.js";
 export class Terraform extends BaseLanguage {
   constructor(fileName: string) {
     const packages = {
-      validate: new Native(fileName),
+      validate: null,
       lint: new Tflint(fileName),
       secure: new Checkov(fileName),
     };

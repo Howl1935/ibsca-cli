@@ -9,25 +9,32 @@ import {red, white, green, blue, yellow} from '../utils/helpers/utilTextColors';
 /** Abstract class representing the base form of tested languages */
 export abstract class BaseLanguage {
     fileName: string;
-    commands: any;
-    data: any;
+    // commands: any;
+    // data: any;
+    validateClass :any;
+    lintClass: any;
+    secureClass: any;
     //abstract getCommandList(check:string): any;
    // abstract editConfig(fileName:string): any;
 
-    constructor(fileName: string, commands:any, data:any) {
+    constructor(fileName: string,  packages: any) {
         this.fileName = fileName;
-        this.commands = commands;
-        this.data = data;
+        // this.commands = commands;
+        // this.data = data;
+
+        this.validateClass = packages.validate;
+        this.lintClass = packages.lint;
+        this.secureClass = packages.secure;
 }
 
 async validate(){
    // need to edit yaml file and add filename
    //this.editConfig('validate');
-   const { validate } = this.commands;
+   const validateData = this.validateClass.commands;
    green(`🗼 Running Validate for ${this.fileName}. It will take a while, please wait...`);
   
-   for (let i = 0; i < validate.length; i++) {
-     const { status, stdout } = spawn.sync(validate[i].command, validate[i].args, { stdio: 'inherit' });
+   for (let i = 0; i < validateData.length; i++) {
+     const { status, stdout } = spawn.sync(validateData[i].command, validateData[i].args, { stdio: 'inherit' });
      if (status !== 0) {
        continue
      }
@@ -43,11 +50,11 @@ lint(){
 async secure(){
   // need to edit yaml file and add filename
   this.editConfig('secure');
-  const { secure } = this.commands;
+  const secureData = this.secureClass.commands;
   green(`🗼 Running Secure for ${this.fileName}. It will take a while, please wait...`);
 
-  for (let i = 0; i < secure.length; i++) {
-    const { status, stdout } = spawn.sync(secure[i].command, secure[i].args, { stdio: 'inherit' });
+  for (let i = 0; i < secureData.length; i++) {
+    const { status, stdout } = spawn.sync(secureData[i].command, secureData[i].args, { stdio: 'inherit' });
     if (status !== 0) {
       continue
     }
@@ -57,9 +64,17 @@ async secure(){
 
 checkVersion(vls : string) {
   //const getPackageInfo = this.getCommandList('data');
-  const getPackageInfo = this.data;
+  let getPackageInfo = null;
+  if(vls === "validate"){
+    getPackageInfo = this.validateClass.data;
+  }else if (vls === "lint"){
+    getPackageInfo = this.lintClass.data;
+  }else if (vls === "secure"){
+    getPackageInfo = this.secureClass.data;
+  }
+  
 
-  const info = getPackageInfo[vls];
+  const info = getPackageInfo;
   green(
     `🗼 Making sure ${info.pkg} version ${info.version} is installed. Please wait...`
   )
@@ -90,16 +105,25 @@ checkVersion(vls : string) {
 }
 
 editConfig(vls : string){
-  const { configType } = this.data[vls];
+  let configType = null;
+  if(vls === "validate"){
+    configType = this.validateClass.data;
+  }else if (vls === "lint"){
+    configType = this.lintClass.data;
+  }else if (vls === "secure"){
+    configType = this.secureClass.data;
+  }
+  
+  //const { configType } = this.data[vls];
 
-  if(configType === ''){
+  if(configType['configType'] === ''){
     // no config file, nothing to worry about.
     
-  }else if(configType === 'yaml'){
+  }else if(configType['configType'] === 'yaml'){
     // yaml config pass needed info
-    this.editYamlConfig(this.data[vls]);
+    this.editYamlConfig(configType);
 
-  }else if(configType === 'hcl'){
+  }else if(configType['configType'] === 'hcl'){
     // hcl config pass needed info
   }else{
     //throw error.
@@ -147,8 +171,16 @@ editConfig(vls : string){
     return fs.existsSync(path);
  }
 
- directoryCheck() : Boolean {
-  const { directorySearch } = this.data;
+ directoryCheck(checkType : string) : Boolean {
+  let directorySearch = null;
+  if(checkType === "validate"){
+    directorySearch = this.validateClass.data['directorySearch'];
+  }else if (checkType === "lint"){
+    directorySearch = this.lintClass.data['directorySearch'];
+  }else if (checkType === "secure"){
+    directorySearch = this.secureClass.data['directorySearch'];
+  }
+  //const { directorySearch } = this.data[checkType];
   return directorySearch;
  }
 

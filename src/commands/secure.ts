@@ -9,8 +9,8 @@ type Options = {
   fileName: string;
 };
 // details for yargs run command
-// export const command: string = "secure <fileName>";
-// export const desc: string = "Runs Ibotta custom checks against current file.";
+export const command: string = "secure <fileName>";
+export const desc: string = "Runs Ibotta custom checks against current file.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options({
@@ -37,7 +37,7 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     secureLanguageClass = languageClassCreator(extension, fileName);
     if (secureLanguageClass) {
       // if command was a directory check, validate that check can be run.
-      if(extension === 0 && !secureLanguageClass.directoryCheck()){
+      if(extension === 0 && !secureLanguageClass.directoryCheck('secure')){
         errorMessage("Unable to run directory check for this language.  Try a specific file instead.")
       }
       // if command was a file check, validate that check can be run      
@@ -68,5 +68,4 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 function errorMessage(err : string) {
   red(`Not a valid extension. Failed at ${err}`)
   process.exit(0);
-
 }

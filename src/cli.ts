@@ -35,7 +35,6 @@ yargs(hideBin(process.argv))
   .command('run <.>', 'Run all SCA checks (Validate, Lint, Secure) on current directory.  Currently supports terraform.')
   .example('$0 run .', 'Runs all checks on current directory.')
   .command('run <.>', 'Run all SCA checks (Validate, Lint, Secure) on current directory.  Currently supports terraform.')
-
   // Details for validate command
   .command('validate <.>', 'Validate all files in current directory to ensure standard coding practices for Ibotta.')
   .example('$0 validate .', 'Scan files in current directory to ensure standard coding practices.')

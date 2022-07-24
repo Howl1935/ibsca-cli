@@ -1,12 +1,22 @@
 import { BaseLanguage } from '../BaseClass.js';
-import { commands, data } from './currentPackagesHub.js'
+//import { commands, data } from './currentPackagesHub.js'
+//import {validate} from './packageHub.js'
 
-export class Terraform extends BaseLanguage{
-    
+import { Native } from './terraform/native'
+import { Tflint } from './tflint/Tflint.js';
+import { Checkov } from './checkov/Checkov.js';
+
+export class Terraform extends BaseLanguage{  
     constructor(fileName: string) {
-        super(fileName, commands, data);
+        const packages = {
+            "validate": new Native(fileName),
+            "lint": new Tflint(fileName),
+            "secure" : new Checkov(fileName) 
+        }
+        super(fileName, packages);
     }
     
 }
 
 
+ 

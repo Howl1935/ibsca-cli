@@ -2,10 +2,11 @@
 /** This is the terraform native "cartridge" make any changes to how it is implemented here */
 
 export function native(fName:string):any {
+
     return [
     {
         "command" : "terraform",
-        "args" : ['-diff', './customChecks/config/config.yml']
+        "args" : ['fmt', '-diff', [fName]]
     },
   ]
 }
@@ -17,9 +18,9 @@ export function native(fName:string):any {
 //    if that package manager is not installed it will direct user to reference page to install.
 
 export const nativeData = {
-    "pkg" : "Checkov",
+    "pkg" : "Terraform",
     "version" : "2.1.45",
-    "command" : "checkov",
+    "command" : "terraform",
     "args" : ['--version'],
     "install" : "brew",
     "installCommands": ['install', 'checkov'],

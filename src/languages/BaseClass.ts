@@ -28,6 +28,7 @@ export abstract class BaseLanguage {
 }
 
 async validate(){
+  yellow("VALIDATE\n\n")
    // need to edit yaml file and add filename
    //this.editConfig('validate');
    const validateData = this.validateClass.commands;
@@ -43,11 +44,24 @@ async validate(){
 }
 lint(){
   // work in progress
-}
+  yellow("LINT\n\n")
+     // need to edit yaml file and add filename
+   //this.editConfig('validate');
+   const lintData = this.lintClass.commands;
+   green(`🗼 Running Lint for ${this.fileName}. It will take a while, please wait...`);
+  
+   for (let i = 0; i < lintData.length; i++) {
+     const { status, stdout } = spawn.sync(lintData[i].command, lintData[i].args, { stdio: 'inherit' });
+     if (status !== 0) {
+       continue
+     }
+    
+}}
 
 // This function is passed a list of objects which are command line commands.  We spawn synchronous processes
 // to run each of these commands sequentially.  The commands are defined within the corosponding language class.
 async secure(){
+  yellow("SECURE\n\n")
   // need to edit yaml file and add filename
   this.editConfig('secure');
   const secureData = this.secureClass.commands;

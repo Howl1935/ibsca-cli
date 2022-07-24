@@ -18,7 +18,7 @@ export const checkovData = {
   installCommands: ["install", "checkov"],
   resource: "https://www.checkov.io/1.Welcome/Quick%20Start.html",
   configType: "yaml",
-  configDir: "/customChecks/config/config.yml",
+  configDir: "/customChecks/terraform/checkov/config/config.yml",
   dirTitle: "directory",
   fileTitle: "file",
   directorySearch: false,

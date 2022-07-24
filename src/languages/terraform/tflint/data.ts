@@ -3,7 +3,7 @@ export function tflint (fName: string){
     return [
         {
         "command" : "mv",
-        "args" : [ './customChecks/config/terraform/tflint/.tflint.hcl', '.']
+        "args" : [ './customChecks/terraform/tflint/config/.tflint.hcl', '.']
         },
         {
             "command" : "tflint",
@@ -15,7 +15,7 @@ export function tflint (fName: string){
       },
       {
         "command" : "mv",
-        "args" : [ '.tflint.hcl', './customChecks/config/terraform/tflint/']
+        "args" : [ '.tflint.hcl', './customChecks/terraform/tflint/config/']
         },
       ]}
     
@@ -34,8 +34,8 @@ export function tflint (fName: string){
         "install" : "brew",
         "installCommands": ['install', 'tflint'],
         "resource" : "https://github.com/terraform-linters/tflint",
-        "configType" : "yaml",
-        "configDir" : '/customChecks/config/config.yml',
+        "configType" : "",
+        "configDir" : '',
         "dirTitle" : 'directory',
         "fileTitle" : 'file',
         "directorySearch" : false

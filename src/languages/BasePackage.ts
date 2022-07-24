@@ -6,6 +6,4 @@ export abstract class BasePackage {
     this.commands = commands;
     this.data = data;
   }
-  
-
 }

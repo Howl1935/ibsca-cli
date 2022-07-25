@@ -1,65 +1,36 @@
 import type { Arguments, CommandBuilder } from "yargs";
-import { extensionType } from '../utils/utilExtensionType';
-import { languageClassCreator } from '../utils/languageClassCreator';
-import { makeMess, cleanMess } from '../utils/repoDownload'
-import {red, white, green, blue, yellow} from '../utils/utilTextColors';
-
+import { makeMess, cleanMess } from "../utils/helpers/repoDownload";
+import { extensionChecker } from "../utils/extensionChecker";
+import { languageClassCreator } from "../utils/helpers/languageClassCreator";
+import { classChecker } from "../utils/classChecker";
 type Options = {
   fileName: string;
 };
-
 // details for yargs run command
 export const command: string = "secure <fileName>";
 export const desc: string = "Runs Ibotta custom checks against current file.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
-    .options({
-    })
+    .options({})
     .positional("fileName", { type: "string", demandOption: true });
 
-    export const handler = async (argv: Arguments<Options>): Promise<void> => {
-      const { fileName } = argv;
-      
-      // get the extension of the fileName
-      let extension: string|undefined = fileName.split('.').pop();
+export const handler = async (argv: Arguments<Options>): Promise<void> => {
+  const { fileName } = argv;
+  const vls = "secure";
+  const extension = await extensionChecker(fileName)
 
-      // If fileName is not properly formatted to be an extension, alert user; otherwise continue
-      if(fileName.indexOf('.') === -1 || fileName.split('.')[0] === '' || fileName.split('.')[1] === ''){
-        // not a valid fileName => .example || example. || . 
-          errorMessage();
-      }else{
-        let extType : number = -1;
-        if(extension === undefined){
-          errorMessage();
-        }else{
-          // Validate extension type; will return a number e.g. 0 = terraform (.tf)
-          extType = extensionType(extension);
-          if(extType === -1){
-            errorMessage();
-          }
-          // check if customChecks folder exists; run command to pull from github
-          makeMess();
-
-          // pass the extension type and fileName to languageClassCreator to create a class with the correct module
-          const secureLanguageClass = languageClassCreator(extType, fileName);
-          if(secureLanguageClass){
-            //validate that packages are installed.
-            if(secureLanguageClass.checkVersion("secure")){
-              // if this passes we can run all checks.
-              await secureLanguageClass.secure();
-            }else{
-              errorMessage();
-            }
-          }else{
-            errorMessage();
-          }
-        } 
-      }
-      cleanMess();
-      process.exit(0);
-    };
-    
-    function errorMessage(){
-      red("Not a valid extension.")
-
+  // creates a language class based on extension
+  const languageClass = languageClassCreator(extension, fileName);
+  
+  if (languageClass) {
+    // pull checks from github
+    makeMess();
+    //validate that packages are installed.
+    if(classChecker(languageClass, fileName, extension, vls)){
+      await languageClass.secure();
     }
+    // remove cloned github repo
+    cleanMess();
+    process.exit(0);
+  }
+};

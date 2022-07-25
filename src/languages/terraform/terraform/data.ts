@@ -1,0 +1,31 @@
+/** This is the terraform native "cartridge" make any changes to how it is implemented here */
+
+export function commands(fName: string): any {
+  return [
+    {
+      command: "terraform",
+      args: ["fmt", "-diff", [fName]],
+    },
+  ];
+}
+// Details for each package that are used for communicating information to user.
+// The program will:
+// 1. check if package exists
+// 2. compare its version
+// 3. if not installed, try and install with given package manager
+//    if that package manager is not installed it will direct user to reference page to install.
+
+export const pkgData = {
+  pkg: "Terraform",
+  version: "2.1.45",
+  command: "terraform",
+  args: ["--version"],
+  install: "brew",
+  installCommands: ["install", "checkov"],
+  resource: "https://www.checkov.io/1.Welcome/Quick%20Start.html",
+  configType: "",
+  configDir: "",
+  dirTitle: "directory",
+  fileTitle: "file",
+  directorySearch: false,
+};

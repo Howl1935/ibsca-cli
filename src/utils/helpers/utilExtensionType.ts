@@ -3,20 +3,15 @@
  * @param extension 
  * @returns A number representing the file type
  */
-
+import { languages } from '../../languages/languages'
 // function to check extension type
-export function extensionType(extension:string){
-    switch(extension){
-        case '.':{
-            return 0;
-        }
-        case 'tf':{
-            return 1;
-        }
+export function extensionType(extension: string) {
 
-        // here we can implement future extensions
-        default: {
-            return -1;
-        }
-    }}
+    let extArr: string[] = []
+    languages.forEach((ext) => {
+        extArr.push(ext.extension)
+    })
+
+    return extArr.indexOf(extension)
+}
 

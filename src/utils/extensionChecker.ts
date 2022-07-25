@@ -24,6 +24,7 @@ export async function extensionChecker(fileName: string) {
 
   } catch (error) {
     errorMessage((<Error>error).message);
-    return -1;
+    process.exit()
+    //return -1;
   }
 }

@@ -1,8 +1,7 @@
 import { BaseLanguage } from "../BaseClass.js";
-import { Native } from "./terraform/native";
-import { Tflint } from "./tflint/Tflint.js";
-import { Checkov } from "./checkov/Checkov.js";
-
+import { Native } from "./terraform/package";
+import { Checkov } from './checkov/package'
+import { Tflint } from './tflint/package'
 export class Terraform extends BaseLanguage {
   constructor(fileName: string) {
     const packages = {

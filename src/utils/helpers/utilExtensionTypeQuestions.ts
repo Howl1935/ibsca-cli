@@ -1,22 +1,26 @@
 import inquirer from "inquirer";
-import { extensionType } from "./utilExtensionType";
-
+import { languages } from '../../languages/languages'
 
   export async function languageType() {
+     
+    const res = languages.map(lang => {
+      if(lang.className[0] !== '.' && lang.className[0] != undefined){
+        return lang.className[0];
+      }
+    }).filter(e=>e !== undefined)
+    res.push('Exit')
    const result =  await inquirer
   .prompt([
     {
       type: 'list',
       name: 'language',
       message: 'Which language extension are you testing folder for?',
-      choices: ['tf', 'Unlisted'],
+      choices: res,
     },
   ])
   .then(answers => {
-    //console.info('You selected:', answers.language);
-    // make sure choices listed above corrolate to extensionType parser
-     //console.log()
-     return extensionType(answers.language)
+     
+     return answers.language === 'Exit' ?  -1 : res.indexOf(answers.language) + 1
         
   });
   return result;

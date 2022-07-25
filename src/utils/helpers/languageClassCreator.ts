@@ -7,19 +7,17 @@
 
 //import class for language
 import { Terraform } from "../../languages/terraform/Terraform";
-
+import { languages } from '../../languages/languages'
 export function languageClassCreator(
   extType: number,
   fileName: string
 ): Terraform | null {
-  switch (extType) {
-    //terraform
-    case 1: {
-      return new Terraform(fileName);
-    }
-    // here we can implement future extensions
-    default: {
-      return null;
-    }
-  }
+
+  const map = new Map();
+ languages.map((e) =>{
+    map.set(e.className[0], e.className[1]) ;
+  })
+
+  return new (map.get(languages[extType].className[0]))(fileName)
+
 }

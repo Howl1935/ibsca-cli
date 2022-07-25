@@ -1,6 +1,6 @@
 import { BaseLanguage } from "../BaseClass.js";
 
-import { Package } from './somePackage/Package'
+import { Package } from './somePackage/package'
 
 export class PackageClass extends BaseLanguage {
   constructor(fileName: string) {

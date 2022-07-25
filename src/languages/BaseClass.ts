@@ -26,23 +26,24 @@ export abstract class BaseLanguage {
 
     // need to edit yaml file and add filename
     const vls = "validate";
-    if(this.pkgData[vls]){
-    this.editConfig(vls);
-    const validate = this.pkgData["validate"].commands;
-    blue(
-      `🗼 Validating ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
-    );
-
-    for (let i = 0; i < validate.length; i++) {
-      const { status, stdout } = spawn.sync(
-        validate[i].command,
-        validate[i].args,
-        { stdio: "inherit" }
+    if (this.pkgData[vls]) {
+      this.editConfig(vls);
+      const validate = this.pkgData["validate"].commands;
+      blue(
+        `🗼 Validating ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
       );
-      if (status !== 0) {
-        continue;
+
+      for (let i = 0; i < validate.length; i++) {
+        const { status, stdout } = spawn.sync(
+          validate[i].command,
+          validate[i].args,
+          { stdio: "inherit" }
+        );
+        if (status !== 0) {
+          continue;
+        }
       }
-    }}else{
+    } else {
       blue(`🗼 Validating... No plugin installed...\n`)
     }
   }
@@ -50,20 +51,21 @@ export abstract class BaseLanguage {
     const vls = "lint";
     // need to edit yaml file and add filename
     this.editConfig(vls);
-    if(this.pkgData[vls]){
-    const lint = this.pkgData["lint"].commands;
-    blue(
-      `🗼 Linting ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
-    );
+    if (this.pkgData[vls]) {
+      const lint = this.pkgData["lint"].commands;
+      blue(
+        `🗼 Linting ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
+      );
 
-    for (let i = 0; i < lint.length; i++) {
-      const { status, stdout } = spawn.sync(lint[i].command, lint[i].args, {
-        stdio: "inherit",
-      });
-      if (status !== 0) {
-        continue;
+      for (let i = 0; i < lint.length; i++) {
+        const { status, stdout } = spawn.sync(lint[i].command, lint[i].args, {
+          stdio: "inherit",
+        });
+        if (status !== 0) {
+          continue;
+        }
       }
-    }}else{
+    } else {
       blue(`🗼 Linting... No plugin installed...\n`)
     }
   }
@@ -72,25 +74,25 @@ export abstract class BaseLanguage {
   // to run each of these commands sequentially.  The commands are defined within the corosponding language class.
   async secure() {
     const vls = "secure";
-    if(this.pkgData[vls]){
-    // need to edit yaml file and add filename
-    this.editConfig(vls);
-    const secure = this.pkgData["secure"].commands;
-    blue(
-      `🗼 Securing ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
-    );
+    if (this.pkgData[vls]) {
+      // need to edit yaml file and add filename
+      this.editConfig(vls);
+      const secure = this.pkgData["secure"].commands;
+      blue(
+        `🗼 Securing ${this.fileName} with ${this.pkgData[vls].data["pkg"]}. It will take a while, please wait...`
+      );
 
-    for (let i = 0; i < secure.length; i++) {
-      const { status, stdout } = spawn.sync(secure[i].command, secure[i].args, {
-        stdio: "inherit",
-      });
-      if (status !== 0) {
-        continue;
+      for (let i = 0; i < secure.length; i++) {
+        const { status, stdout } = spawn.sync(secure[i].command, secure[i].args, {
+          stdio: "inherit",
+        });
+        if (status !== 0) {
+          continue;
+        }
       }
+    } else {
+      blue(`🗼 Securing... No plugin installed...\n`)
     }
-  }else{
-    blue(`🗼 Securing... No plugin installed...\n`)
-  }
   }
   checkVersion(vls: string) {
     const pkgData = this.pkgData[vls].data;
@@ -139,6 +141,7 @@ export abstract class BaseLanguage {
 
   editConfig(vls: string) {
     const { configType } = this.pkgData[vls].data;
+    
     if (configType === "") {
       // no config file, nothing to worry about.
     } else if (configType === "yaml") {

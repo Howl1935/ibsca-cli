@@ -1,6 +1,6 @@
 /** This is the terraform native "cartridge" make any changes to how it is implemented here */
 
-export function native(fName: string): any {
+export function commands(fName: string): any {
   return [
     {
       command: "terraform",
@@ -15,7 +15,7 @@ export function native(fName: string): any {
 // 3. if not installed, try and install with given package manager
 //    if that package manager is not installed it will direct user to reference page to install.
 
-export const nativeData = {
+export const pkgData = {
   pkg: "Terraform",
   version: "2.1.45",
   command: "terraform",

@@ -23,7 +23,6 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   // creates a language class based on extension
   const languageClass = languageClassCreator(extension, fileName);
-  
   if (languageClass) {
     // pull checks from github
     makeMess();

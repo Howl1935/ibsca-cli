@@ -1,6 +1,6 @@
 /** This is the checkov "cartridge" make any changes to how it is implemented here */
 
-export function checkov(fName: string) {
+export function commands(fName: string) {
   return [
     {
       command: "checkov",
@@ -9,7 +9,7 @@ export function checkov(fName: string) {
   ];
 }
 
-export const checkovData = {
+export const pkgData = {
   pkg: "Checkov",
   version: "2.1.45",
   command: "checkov",

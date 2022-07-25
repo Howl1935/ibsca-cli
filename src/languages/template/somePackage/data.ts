@@ -1,6 +1,6 @@
 /** This is the template "cartridge" make any changes to how it is implemented here */
 
-export function packageName(fName: string) {
+export function commands(fName: string) {
   return [
     {
       command: "",
@@ -9,7 +9,7 @@ export function packageName(fName: string) {
   ];
 }
 
-export const packageData = {
+export const pkgData = {
   pkg: "",
   version: "",
   command: "",
@@ -23,3 +23,4 @@ export const packageData = {
   fileTitle: "",
   directorySearch: false,
 };
+ 

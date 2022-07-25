@@ -1,5 +1,5 @@
 
-export function tflint (fName: string){
+export function commands(fName: string){
     return [
         {
         "command" : "mv",
@@ -19,7 +19,7 @@ export function tflint (fName: string){
         },
       ]}
     
-    export const tflintData = {
+    export const pkgData = {
         "pkg" : "TFlint",
         "version" : "0.38.1",
         "command" : "tflint",

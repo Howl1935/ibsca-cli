@@ -1,11 +1,11 @@
-import { getExtension } from "../utils/commandLineHelper";
-import { languageType } from "../utils/helpers/utilExtensionTypeQuestions";
-import { errorMessage } from "../utils/errorMessage";
+import { filenameParser } from "./filenameParser";
+import { languageType } from "./extensionTypeQuestions";
+import { errorMessage } from "../cli/errorMessage";
 
 export async function extensionChecker(fileName: string) {
   try {
     // helper function; returns a number representing the extension or if its a dir
-    let extension = getExtension(fileName);
+    let extension = filenameParser(fileName);
 
     // if extension is valid; run checks
     if (extension !== -1) {

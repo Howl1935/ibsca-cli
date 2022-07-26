@@ -1,8 +1,8 @@
 import { commands, pkgData } from "./data";
-import { BasePackage } from "../../BasePackage.js";
+import { AbstractPackagePlugin } from "../../AbstractPackagePlugin.js";
 
-export class Package extends BasePackage {
-  constructor(fName: string) {
-    super(commands(fName), pkgData);
+export class Package extends AbstractPackagePlugin {
+  constructor(fName: string, isLocal: boolean) {
+    super(commands(fName, isLocal ? './' + pkgData.configFile : pkgData.configDir + pkgData.configFile), pkgData);
   }
 }

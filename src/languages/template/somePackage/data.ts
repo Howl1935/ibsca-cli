@@ -1,6 +1,6 @@
 /** This is the template "cartridge" make any changes to how it is implemented here */
 
-export function commands(fName: string) {
+export function commands(fName: string, configDir: string) {
   return [
     {
       command: "",
@@ -18,6 +18,7 @@ export const pkgData = {
   installCommands: [""],
   resource: "",
   configType: "",
+  configFile: "",
   configDir: "",
   dirTitle: "",
   fileTitle: "",

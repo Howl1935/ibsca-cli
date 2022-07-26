@@ -1,6 +1,6 @@
 import {
     red,
-  } from "../utils/helpers/utilTextColors";
+  } from "./textColors";
 
 export function errorMessage(err: string) {
     red(`${err}`);

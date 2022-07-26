@@ -5,7 +5,7 @@
  */
 import { languages } from '../../languages/languages'
 // function to check extension type
-export function extensionType(extension: string) {
+export function getExtension(extension: string) {
 
     let extArr: string[] = []
     languages.forEach((ext) => {

@@ -4,9 +4,9 @@ const fs = require("fs-extra");
 const path = require("path");
 const cwd = process.cwd();
 const check = (file: string) => fs.existsSync(path.join(cwd, file));
-import { red, white, green, blue, yellow } from "./utilTextColors";
+import { red, white, green, blue, yellow } from "./textColors";
 
-import { makeMessCommand, cleanMessCommand } from "../helpers/repoCommands";
+import { makeMessCommand, cleanMessCommand } from "../configs/repoConfig";
 
 export async function makeMess() {
   if (check("customChecks")) {

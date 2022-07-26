@@ -1,6 +1,6 @@
 /** This is the terraform native "cartridge" make any changes to how it is implemented here */
 
-export function commands(fName: string): any {
+export function commands(fName: string, configDir : string): any {
   return [
     {
       command: "terraform",
@@ -22,8 +22,9 @@ export const pkgData = {
   args: ["--version"],
   install: "brew",
   installCommands: ["install", "checkov"],
-  resource: "https://www.checkov.io/1.Welcome/Quick%20Start.html",
+  resource: "https://www.terraform.io/language/syntax/style",
   configType: "",
+  configFile: "",
   configDir: "",
   dirTitle: "directory",
   fileTitle: "file",

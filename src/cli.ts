@@ -2,7 +2,7 @@
 
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { red, white, green, blue, yellow } from './utils/helpers/utilTextColors';
+import { red, white, green, blue, yellow } from './utils/cli/textColors';
 
 // get current version of ibsca
 // yargs.version(version)

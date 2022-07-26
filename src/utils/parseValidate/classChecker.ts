@@ -1,4 +1,4 @@
-import { errorMessage } from "./errorMessage";
+import { errorMessage } from "../cli/errorMessage";
 
 export function classChecker(
   languageClass: any,

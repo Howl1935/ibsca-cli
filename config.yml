@@ -1,0 +1,9 @@
+branch: master
+directory:
+- .
+download-external-modules: false
+evaluate-variables: true
+external-modules-download-path: .external_modules
+framework:
+- all
+secrets-scan-file-type: []

@@ -13,12 +13,13 @@ export function languageClassCreator(
   fileName: string,
   isLocal: boolean
 ): AbstractAnalysisEngine | null {
-
+  // creates a mapping from language name to language object
   const map = new Map();
- languages.map((e) =>{
-    map.set(e.className[0], e.className[1]) ;
+  languages.map((e) => {
+    map.set(e.className[0], e.className[1]);
   })
 
+  // instantiates languages
   return new (map.get(languages[extType].className[0]))(fileName, isLocal)
 
 }

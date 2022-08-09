@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import spawn from "cross-spawn";
+import { errorMessage } from "../utils/cli/errorMessage";
 const yaml = require("js-yaml");
 const fs = require("fs");
 const path = require("path");
@@ -8,41 +9,55 @@ import {
   white,
   blue,
   yellow,
+  green,
 } from "../utils/cli/textColors";
 
 /** Abstract class representing the base form of tested languages */
 export abstract class AbstractAnalysisEngine {
   fileName: string;
   pkgData: any;
+  isLocal: boolean;
   //abstract getCommandList(check:string): any;
   // abstract editConfig(fileName:string): any;
 
-  constructor(fileName: string, packages: any) {
+  constructor(fileName: string, packages: any, isLocal: boolean) {
     this.fileName = fileName;
     this.pkgData = packages;
+    this.isLocal = isLocal;
   }
 
   async validate() {
     const vls = "validate";
-    const { configType, pkg } = this.pkgData[vls].data;
-    const validate = this.pkgData[vls].commands;
 
     if (this.pkgData[vls]) {
+      const { configType, pkg, configFile, resource } = this.pkgData[vls].data;
+      const validate = this.pkgData[vls].commands;
+      let canContinue = true;
       // check if there is a config to edit, otherwise this is a direct command line run.
-      if (configType !== '') {
+      if (configType !== '' && !this.isLocal) {
         this.editConfig(vls);
       }
       blue(
         `🗼 Validating ${this.fileName} with ${pkg}. It will take a while, please wait...`
       );
-      for (let i = 0; i < validate.length; i++) {
-        const { status, stdout } = spawn.sync(
-          validate[i].command,
-          validate[i].args,
-          { stdio: "inherit" }
-        );
-        if (status !== 0) {
-          continue;
+      if (this.isLocal) {
+        if (!this.fileExists('./' + configFile)) {
+          errorMessage(`Config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\nMore details at ${resource}`)
+          canContinue = false;
+        } else {
+          green('Running local config file.')
+        }
+      }
+      if (canContinue) {
+        for (let i = 0; i < validate.length; i++) {
+          const { status, stdout } = spawn.sync(
+            validate[i].command,
+            validate[i].args,
+            { stdio: "inherit" }
+          );
+          if (status !== 0) {
+            continue;
+          }
         }
       }
     } else {
@@ -50,25 +65,35 @@ export abstract class AbstractAnalysisEngine {
     }
   }
   async lint() {
-    const vls = "lint";
-    const { configType, pkg } = this.pkgData[vls].data;
-    const lint = this.pkgData[vls].commands;
 
+    const vls = "lint";
     if (this.pkgData[vls]) {
+      const { configType, pkg, configFile, resource } = this.pkgData[vls].data;
+      const lint = this.pkgData[vls].commands;
+      let canContinue = true;
       // check if there is a config to edit, otherwise this is a direct command line run.
-      if (configType !== '') {
+      if (configType !== '' && !this.isLocal) {
         this.editConfig(vls);
       }
       blue(
         `🗼 Linting ${this.fileName} with ${pkg}. It will take a while, please wait...`
       );
-
-      for (let i = 0; i < lint.length; i++) {
-        const { status, stdout } = spawn.sync(lint[i].command, lint[i].args, {
-          stdio: "inherit",
-        });
-        if (status !== 0) {
-          continue;
+      if (this.isLocal) {
+        if (!this.fileExists('./' + configFile)) {
+          errorMessage(`Config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\nMore details at ${resource}`)
+          canContinue = false;
+        } else {
+          green('Running local config file.')
+        }
+      }
+      if (canContinue) {
+        for (let i = 0; i < lint.length; i++) {
+          const { status, stdout } = spawn.sync(lint[i].command, lint[i].args, {
+            stdio: "inherit",
+          });
+          if (status !== 0) {
+            continue;
+          }
         }
       }
     } else {
@@ -79,25 +104,36 @@ export abstract class AbstractAnalysisEngine {
   // This function is passed a list of objects which are command line commands.  We spawn synchronous processes
   // to run each of these commands sequentially.  The commands are defined within the corosponding language class.
   async secure() {
-    const vls = "secure";
-    const { configType, pkg } = this.pkgData[vls].data;
-    const secure = this.pkgData[vls].commands;
 
+    const vls = "secure";
     if (this.pkgData[vls]) {
+      const { configType, pkg, configFile, resource } = this.pkgData[vls].data;
+      const secure = this.pkgData[vls].commands;
+      let canContinue = true;
       // check if there is a config to edit, otherwise this is a direct command line run.
-      if (configType !== '') {
-       this.editConfig(vls);
+      if (configType !== '' && !this.isLocal) {
+        this.editConfig(vls);
       }
+
       blue(
-        `🗼 Securing ${this.fileName} with ${pkg}. It will take a while, please wait...`
+        `🗼 Securing ${this.fileName === '.' ? 'directory' : this.fileName} with ${pkg}. It will take a while, please wait...`
       );
-        console.log(secure)
-      for (let i = 0; i < secure.length; i++) {
-        const { status, stdout } = spawn.sync(secure[i].command, secure[i].args, {
-          stdio: "inherit",
-        });
-        if (status !== 0) {
-          continue;
+      if (this.isLocal) {
+        if (!this.fileExists('./' + configFile)) {
+          errorMessage(`Config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\nMore details at ${resource}`)
+          canContinue = false;
+        } else {
+          green('Running local config file.')
+        }
+      }
+      if (canContinue) {
+        for (let i = 0; i < secure.length; i++) {
+          const { status, stdout } = spawn.sync(secure[i].command, secure[i].args, {
+            stdio: "inherit",
+          });
+          if (status !== 0) {
+            continue;
+          }
         }
       }
     } else {
@@ -105,7 +141,7 @@ export abstract class AbstractAnalysisEngine {
     }
   }
   checkVersion(vls: string) {
-    const {pkg, version, command, args, install, pkgData, installCommands, resource} = this.pkgData[vls].data;
+    const { pkg, version, command, args, install, pkgData, installCommands, resource } = this.pkgData[vls].data;
 
     blue(
       `🗼 Making sure ${pkg} version ${version} is installed. Please wait...`

@@ -11,8 +11,7 @@ type Options = {
 // details for yargs run command
 export const command: string = "lint <fileName>";
 export const aliases: string = "l";
-
-export const desc: string = "Runs Ibotta custom checks against current file.";
+export const desc: string = "Runs Ibotta custom checks against current file.  Use . to try directory search.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options( {local : {

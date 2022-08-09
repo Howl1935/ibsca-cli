@@ -5,19 +5,21 @@ import { languageClassCreator } from "../utils/parseValidate/languageClassCreato
 import { classChecker } from "../utils/parseValidate/classChecker";
 type Options = {
   fileName: string;
-  local: boolean ;
+  local: boolean;
 
 };
 // details for yargs run command
 export const command: string = "secure <fileName>";
 export const aliases: string = "s";
 
-export const desc: string = "Runs Ibotta custom checks against current file.";
+export const desc: string = "Runs Ibotta custom checks against current file. Use . to try directory search.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
-    .options({local : {
-      type: "boolean", alias: "l", description: "Run checks against customized local config file. (When possible).", default: false
-    }})
+    .options({
+      local: {
+        type: "boolean", alias: "l", description: "Run checks against customized local config file. (When possible).", default: false
+      }
+    })
     .positional("fileName", { type: "string", demandOption: true });
 
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
@@ -26,16 +28,15 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const extension = await extensionChecker(fileName)
   // creates a language class based on extension
   const languageClass = languageClassCreator(extension, fileName, local);
-  
   if (languageClass) {
     // pull checks from github
     !local && makeMess();
     //validate that packages are installed.
-    if(classChecker(languageClass, fileName, extension, vls)){
+    if (classChecker(languageClass, fileName, extension, vls)) {
       await languageClass.secure();
     }
     // remove cloned github repo
-    cleanMess();
+    //cleanMess();
     process.exit(0);
   }
 };

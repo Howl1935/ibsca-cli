@@ -12,7 +12,7 @@ type Options = {
 // details for yargs run command
 export const command: string = "validate <fileName>";
 export const aliases: string = "v";
-export const desc: string = "Runs Ibotta custom checks against current file.";
+export const desc: string = "Runs Ibotta custom checks against current file. Use . to try directory search.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options({local : {
@@ -24,6 +24,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { fileName, local } = argv;
   const vls = "validate";
+
   const extension = await extensionChecker(fileName)
 
   // creates a language class based on extension

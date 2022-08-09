@@ -8,6 +8,10 @@ export function classChecker(
 ) {
   try {
     if (languageClass) {
+      if(languageClass.pkgData[vls] === null){
+        throw new Error(`${vls} plugin not available.`);
+
+      }
       // if command was a directory check, validate that check can be run.
       if (fileName === "." && !languageClass.directoryCheck(vls)) {
         throw new Error(

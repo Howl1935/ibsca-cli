@@ -13,7 +13,7 @@ type Options = {
  export const command: string = "run <fileName>";
  export const aliases: string = "r";
 
- export const desc: string = "Usage: Validate, Secure, and Lint given file.";
+ export const desc: string = "Usage: Validate, Secure, and Lint given file. Use . to try directory search.";
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs

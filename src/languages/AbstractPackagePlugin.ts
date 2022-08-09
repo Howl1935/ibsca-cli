@@ -6,5 +6,4 @@ export abstract class AbstractPackagePlugin {
     this.commands = commands;
     this.data = data;
   }
-  
 }

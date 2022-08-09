@@ -3,6 +3,13 @@ import { languageClassCreator } from '../utils/parseValidate/languageClassCreato
 import { makeMess, cleanMess } from '../utils/cli/repoDownload'
 import { classChecker } from "../utils/parseValidate/classChecker";
 import ora = require('ora')
+import {
+  red,
+  white,
+  blue,
+  yellow,
+  green,
+} from "../utils/cli/textColors";
 import{ extensionChecker } from "../utils/parseValidate/extensionChecker";
 type Options = {
   fileName: string;
@@ -33,22 +40,23 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
  
   // creates a language class based on extension
   const languageClass = languageClassCreator(extension, fileName, local);
+  blue("\n\nInializing Ibsca... ")
 
   // run through checks
   if(languageClass){
     // download git folder containing all config/custom policies unless isLocal flag was raised
     !local && makeMess();    
 
-    if(classChecker(languageClass, fileName, extension, validate)){
+    if(classChecker(languageClass, fileName, validate)){
       await languageClass.validate();
          console.log(' \n')
       
     }
-    if(classChecker(languageClass, fileName, extension, lint)){
+    if(classChecker(languageClass, fileName, lint)){
       await languageClass.lint();
       console.log(' \n')
     }
-    if(classChecker(languageClass, fileName, extension, secure)){
+    if(classChecker(languageClass, fileName, secure)){
       await languageClass.secure();
       console.log(' \n')
     }

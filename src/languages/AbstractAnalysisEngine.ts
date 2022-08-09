@@ -38,11 +38,11 @@ export abstract class AbstractAnalysisEngine {
         this.editConfig(vls);
       }
       blue(
-        `🗼 Validating ${this.fileName} with ${pkg}. It will take a while, please wait...`
+        `🗼 Validating ${this.fileName} with ${pkg}. It will take a while, please wait...\n`
       );
       if (this.isLocal) {
         if (!this.fileExists('./' + configFile)) {
-          errorMessage(`Config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\nMore details at ${resource}`)
+          errorMessage(`Local config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\nMore details at ${resource}`)
           canContinue = false;
         } else {
           green('Running local config file.')
@@ -60,6 +60,9 @@ export abstract class AbstractAnalysisEngine {
           }
         }
       }
+      blue(
+        `Validate analysis completed.\n\n`
+      );
     } else {
       blue(`🗼 Validating... No plugin installed...\n`)
     }
@@ -76,11 +79,11 @@ export abstract class AbstractAnalysisEngine {
         this.editConfig(vls);
       }
       blue(
-        `🗼 Linting ${this.fileName} with ${pkg}. It will take a while, please wait...`
+        `🗼 Linting ${this.fileName} with ${pkg}. It will take a while, please wait...\n`
       );
       if (this.isLocal) {
         if (!this.fileExists('./' + configFile)) {
-          errorMessage(`Config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\nMore details at ${resource}`)
+          errorMessage(`Config file does not exist.  Please add a ${pkg} ${configFile} to the cwd.\n More details at ${resource}\n`)
           canContinue = false;
         } else {
           green('Running local config file.')
@@ -96,6 +99,9 @@ export abstract class AbstractAnalysisEngine {
           }
         }
       }
+      blue(
+        `Lint analysis completed.\n\n`
+      );
     } else {
       blue(`🗼 Linting... No plugin installed...\n`)
     }
@@ -116,7 +122,7 @@ export abstract class AbstractAnalysisEngine {
       }
 
       blue(
-        `🗼 Securing ${this.fileName === '.' ? 'directory' : this.fileName} with ${pkg}. It will take a while, please wait...`
+        `🗼 Securing ${this.fileName === '.' ? 'directory' : this.fileName} with ${pkg}. It will take a while, please wait...\n`
       );
       if (this.isLocal) {
         if (!this.fileExists('./' + configFile)) {
@@ -136,6 +142,9 @@ export abstract class AbstractAnalysisEngine {
           }
         }
       }
+      blue(
+        `Secure analysis completed.\n\n`
+      );
     } else {
       blue(`🗼 Securing... No plugin installed...\n`)
     }
@@ -233,5 +242,9 @@ export abstract class AbstractAnalysisEngine {
   directoryCheck(vls: string): Boolean {
     const { directorySearch } = this.pkgData[vls].data;
     return directorySearch;
+  }
+  fileCheck(vls: string): Boolean {
+    const { fileCheck } = this.pkgData[vls].data;
+    return fileCheck;
   }
 }

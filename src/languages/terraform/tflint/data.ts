@@ -24,7 +24,9 @@ export function commands(fName: string, configDir : string){
         configDir : './customChecks/terraform/tflint/config/',
         dirTitle : 'directory',
         fileTitle : 'file',
-        directorySearch : true
+        directorySearch : true,
+        fileCheck : false
+
       }
     
       

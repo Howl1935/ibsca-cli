@@ -3,7 +3,13 @@ import { makeMess, cleanMess } from "../utils/cli/repoDownload";
 import { extensionChecker } from "../utils/parseValidate/extensionChecker";
 import { languageClassCreator } from "../utils/parseValidate/languageClassCreator";
 import { classChecker } from "../utils/parseValidate/classChecker";
-
+import {
+  red,
+  white,
+  blue,
+  yellow,
+  green,
+} from "../utils/cli/textColors";
 type Options = {
   fileName: string;
   local: boolean ;
@@ -29,15 +35,17 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
 
   // creates a language class based on extension
   const languageClass = languageClassCreator(extension, fileName, local);
+  blue("\n\nInializing Ibsca... ")
+
   if (languageClass) {
     // pull checks from github
     !local && makeMess();
     //validate that packages are installed.
-    if(classChecker(languageClass, fileName, extension, vls)){
+    if(classChecker(languageClass, fileName, vls)){
       await languageClass.validate();
     }
     // remove cloned github repo
-    cleanMess();
+   // cleanMess();
     process.exit(0);
   }
 };

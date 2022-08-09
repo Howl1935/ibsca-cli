@@ -23,5 +23,7 @@ export const pkgData = {
   dirTitle: "",
   fileTitle: "",
   directorySearch: false,
+  fileCheck : true
+
 };
  

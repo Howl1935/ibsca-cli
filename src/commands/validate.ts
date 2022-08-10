@@ -30,7 +30,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { fileName, local } = argv;
   const vls = "validate";
-
+  let status: number | null = 0;
   const extension = await extensionChecker(fileName)
 
   // creates a language class based on extension
@@ -42,10 +42,10 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     !local && makeMess();
     //validate that packages are installed.
     if(classChecker(languageClass, fileName, vls)){
-      await languageClass.validate();
+      status = await languageClass.validate();
     }
     // remove cloned github repo
-   // cleanMess();
-    process.exit(0);
+    cleanMess();
+    status !== null ? process.exit(status) : process.exit(1)
   }
 };

@@ -2,7 +2,6 @@ import type { Arguments, CommandBuilder } from "yargs";
 import { languageClassCreator } from '../utils/parseValidate/languageClassCreator';
 import { makeMess, cleanMess } from '../utils/cli/repoDownload'
 import { classChecker } from "../utils/parseValidate/classChecker";
-import ora = require('ora')
 import {
   red,
   white,
@@ -14,7 +13,6 @@ import{ extensionChecker } from "../utils/parseValidate/extensionChecker";
 type Options = {
   fileName: string;
   local: boolean ;
-
 };
 
  export const command: string = "run <fileName>";
@@ -34,6 +32,9 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const validate = 'validate';
   const lint = 'lint';
   const secure = 'secure';
+  let validate_status: number | null = 0;
+  let lint_status: number | null = 0;
+  let secure_status: number | null = 0;
 
 
   const extension = await extensionChecker(fileName)
@@ -48,23 +49,25 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
     !local && makeMess();    
 
     if(classChecker(languageClass, fileName, validate)){
-      await languageClass.validate();
+      validate_status = await languageClass.validate();
          console.log(' \n')
       
     }
     if(classChecker(languageClass, fileName, lint)){
-      await languageClass.lint();
+      lint_status = await languageClass.lint();
       console.log(' \n')
     }
     if(classChecker(languageClass, fileName, secure)){
-      await languageClass.secure();
+      secure_status = await languageClass.secure();
       console.log(' \n')
     }
-  
   }
-
   cleanMess();
-  process.exit()
+  if(validate_status === 0 && lint_status === 0 && secure_status === 0){
+    process.exit(0);
+  }else{
+    process.exit(1);
+  }
 };
 
 

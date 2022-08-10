@@ -30,6 +30,6 @@ export async function extensionChecker(fileName: string) {
 
   } catch (error) {
     errorMessage((<Error>error).message);
-    process.exit()
+    process.exit(1)
   }
 }

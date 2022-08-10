@@ -27,6 +27,7 @@ export abstract class AbstractAnalysisEngine {
   }
 
   async validate() {
+    let statusCode: number | null = 0;
     const vls = "validate";
 
     if (this.pkgData[vls]) {
@@ -56,6 +57,7 @@ export abstract class AbstractAnalysisEngine {
             { stdio: "inherit" }
           );
           if (status !== 0) {
+            statusCode = status;
             continue;
           }
         }
@@ -66,8 +68,10 @@ export abstract class AbstractAnalysisEngine {
     } else {
       blue(`🗼 Validating... No plugin installed...\n`)
     }
+    return statusCode;
   }
   async lint() {
+    let statusCode: number | null = 0;
 
     const vls = "lint";
     if (this.pkgData[vls]) {
@@ -95,6 +99,7 @@ export abstract class AbstractAnalysisEngine {
             stdio: "inherit",
           });
           if (status !== 0) {
+            statusCode = status;
             continue;
           }
         }
@@ -105,12 +110,13 @@ export abstract class AbstractAnalysisEngine {
     } else {
       blue(`🗼 Linting... No plugin installed...\n`)
     }
+    return statusCode;
   }
 
   // This function is passed a list of objects which are command line commands.  We spawn synchronous processes
   // to run each of these commands sequentially.  The commands are defined within the corosponding language class.
   async secure() {
-
+    let statusCode: number | null = 0;
     const vls = "secure";
     if (this.pkgData[vls]) {
       const { configType, pkg, configFile, resource } = this.pkgData[vls].data;
@@ -138,6 +144,7 @@ export abstract class AbstractAnalysisEngine {
             stdio: "inherit",
           });
           if (status !== 0) {
+            statusCode = status;
             continue;
           }
         }
@@ -148,6 +155,7 @@ export abstract class AbstractAnalysisEngine {
     } else {
       blue(`🗼 Securing... No plugin installed...\n`)
     }
+    return statusCode;
   }
   checkVersion(vls: string) {
     const { pkg, version, command, args, install, pkgData, installCommands, resource } = this.pkgData[vls].data;

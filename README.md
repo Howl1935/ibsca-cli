@@ -1,6 +1,7 @@
 # IBSCA-CLI
 
-Ibsca is static code analysis tool for Ibotta. The goal of Ibsca (Ibotta Static Code Analysis) is to automate SCA functions for developers so that they can focus on developing. Policies and Rules for validating, linting, and securing (VLS) will be maintained by Ibotta Cloud Infra. This approach will lead to cohesive, and secure code. Our tool leverages the functionality of several well maintained SCA tools and customizes them to our companies use cases.
+Ibsca offers static code analysis tooling for Ibotta. The goal of Ibsca (Ibotta Static Code Analysis) is to automate SCA functions for developers so that they can focus on developing. Policies and Rules for validating, linting, and securing (VLS) will be maintained by Ibotta Cloud Infra. This approach will lead to cohesive, and secure code. Our tool leverages the functionality of  well maintained, open source SCA tools and customizes them to our companie's use cases.
+
 
 ## Installation
 
@@ -16,7 +17,7 @@ If you have problems with python certificates on mac, navigate to your python di
 
 ## Overview
 
-Ibotta-cli is a nodejs CLI written in TypeScript and packaged with homebrew.  The goal is to create easily configurable "modules" for different static code analysis tools which can easily be swapped out for others in the future if the need arises.  Currently IBSCA will only support Terraform files however, another design goal is to leave room for supporting other languages.
+Ibotta-cli is a nodejs CLI written in TypeScript and packaged with homebrew.  The goal is to create easily configurable "modules" for different static code analysis tools which can easily be swapped out for others in the future if the need arises.  Currently IBSCA will only support Terraform files however, the application leaves room for supporting other languages.
 
 Here is a high level plan of the CLI.
 
@@ -111,3 +112,4 @@ Follow these steps to plug a package into IBSCA.
 ## Versioning
 
 Follow the guide at [IBSCA Versioning Repository](https://github.com/Howl1935/homebrew-ibsca)
+

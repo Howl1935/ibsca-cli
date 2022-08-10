@@ -9,6 +9,6 @@ export class PackageClass extends AbstractAnalysisEngine {
       lint: null,
       secure: null,
     };
-    super(fileName, packages);
+    super(fileName, packages, isLocal);
   }
 }

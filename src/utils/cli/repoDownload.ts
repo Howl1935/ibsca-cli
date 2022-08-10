@@ -10,21 +10,19 @@ import { makeMessCommand, cleanMessCommand } from "../configs/repoConfig";
 
 export async function makeMess() {
   if (check("customChecks")) {
-    green("customChecks already exists");
-    console.log(" \n");
+    green("customChecks already exists\n\n");
+
     return;
   } else {
     // download customChecks
-    green("Getting external checks...");
-    console.log(" \n");
+    green("Getting external checks...\n\n");
     const dl = spawn.sync(makeMessCommand[0].command, makeMessCommand[0].args);
   }
 }
 
 export async function cleanMess() {
   if (check("customChecks")) {
-    green("removing customChecks folder");
-    console.log(" \n");
+    green("removing customChecks folder\n\n");
     const rm = spawn.sync(
       cleanMessCommand[0].command,
       cleanMessCommand[0].args,

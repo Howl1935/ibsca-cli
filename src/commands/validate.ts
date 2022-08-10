@@ -3,7 +3,13 @@ import { makeMess, cleanMess } from "../utils/cli/repoDownload";
 import { extensionChecker } from "../utils/parseValidate/extensionChecker";
 import { languageClassCreator } from "../utils/parseValidate/languageClassCreator";
 import { classChecker } from "../utils/parseValidate/classChecker";
-
+import {
+  red,
+  white,
+  blue,
+  yellow,
+  green,
+} from "../utils/cli/textColors";
 type Options = {
   fileName: string;
   local: boolean ;
@@ -12,7 +18,7 @@ type Options = {
 // details for yargs run command
 export const command: string = "validate <fileName>";
 export const aliases: string = "v";
-export const desc: string = "Runs Ibotta custom checks against current file.";
+export const desc: string = "Runs Ibotta custom checks against current file. Use . to try directory search.";
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs
     .options({local : {
@@ -24,19 +30,22 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { fileName, local } = argv;
   const vls = "validate";
+
   const extension = await extensionChecker(fileName)
 
   // creates a language class based on extension
   const languageClass = languageClassCreator(extension, fileName, local);
+  blue("\n\nInializing Ibsca... ")
+
   if (languageClass) {
     // pull checks from github
     !local && makeMess();
     //validate that packages are installed.
-    if(classChecker(languageClass, fileName, extension, vls)){
+    if(classChecker(languageClass, fileName, vls)){
       await languageClass.validate();
     }
     // remove cloned github repo
-    cleanMess();
+   // cleanMess();
     process.exit(0);
   }
 };

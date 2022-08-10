@@ -9,6 +9,6 @@ export class Terraform extends AbstractAnalysisEngine {
       lint: new Native(fileName, isLocal),
       secure: new Checkov(fileName, isLocal),
     };
-    super(fileName, packages);
+    super(fileName, packages, isLocal);
   }
 }

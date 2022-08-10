@@ -2,6 +2,12 @@ import { filenameParser } from "./filenameParser";
 import { languageType } from "./extensionTypeQuestions";
 import { errorMessage } from "../cli/errorMessage";
 
+/** This function's purpose is to parse a given filename passed in by a user.  
+ * It will firstly test the filename's validity, check if it is a directory, or if it is an extension. 
+ * If it is an extension, it will return which extension.
+ * All of this information is returned as a numeric value. 
+ **/
+
 export async function extensionChecker(fileName: string) {
   try {
     // helper function; returns a number representing the extension or if its a dir
@@ -25,6 +31,5 @@ export async function extensionChecker(fileName: string) {
   } catch (error) {
     errorMessage((<Error>error).message);
     process.exit()
-    //return -1;
   }
 }

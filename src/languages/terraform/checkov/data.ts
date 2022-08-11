@@ -1,6 +1,9 @@
 /** This is the checkov "cartridge" make any changes to how it is implemented here */
 
 export function commands(fName: string, configDirectory: string) {
+  // pull any resources you may need from pkData here
+  const {} = pkgData;
+  // enter all sequential commands to run plugin here.
   return [
     {
       command: "checkov",

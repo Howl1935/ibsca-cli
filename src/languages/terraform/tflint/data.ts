@@ -1,6 +1,9 @@
 
 export function commands(fName: string, configDir : string){
-    return [
+  // pull any resources you may need from pkData here
+  const {} = pkgData;
+  // enter all sequential commands to run plugin here.
+  return [
         {
             "command" : "tflint",
             "args" : ['--init']

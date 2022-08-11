@@ -1,6 +1,9 @@
 /** This is the terraform native "cartridge" make any changes to how it is implemented here */
 
 export function commands(fName: string, configDir : string): any {
+  // pull any resources you may need from pkData here
+  const {} = pkgData;
+  // enter all sequential commands to run plugin here.
   return [
     {
       command: "terraform",

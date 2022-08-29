@@ -1,8 +1,21 @@
 # IBSCA-CLI
 
-  
+
 
 Ibsca offers static code analysis tooling for Ibotta. The goal of Ibsca (Ibotta Static Code Analysis) is to automate SCA functions for developers so that they can focus on developing. Policies and Rules for validating, linting, and securing (VLS) will be maintained by Ibotta Cloud Infra. This approach will lead to cohesive, and secure code. Our tool leverages the functionality of well maintained, open source SCA tools and customizes them to our company's use cases.
+ Maintained by InfraServices
+ 
+
+ 1. [Installation](#installation)
+ 2. [Overview](#overview)
+ 3. [Using IBSCA](#using-ibsca)
+ 4. [Contributing](#contributing-to-ibsca)
+ 5. [Editing The CLI](#editing-the-cli)
+ 6. [Adding a New Language](#adding-a-new-language)
+ 7. [Adding a New Plugin](#adding-a-new-plugin)
+ 8. [Inserting a Plugin](#inserting-a-plugin)
+ 9. [Package Data Reference](#package-data)
+ 10. [Versioning](#versioning) 
 
   
   
@@ -173,7 +186,7 @@ Follow these steps to add support for a new language to the IBSCA CLI.
 
   
 
-9. Push your changes see **Versioning** for how to update your changes with package manager. See **Adding a new plugin** for implementing a new tool in IBSCA.
+9. Push your changes see **Versioning** for how to update your changes with package manager. See [**Adding a new plugin**](#adding-a-new-plugin) for implementing a new tool in IBSCA.
 
   
   
@@ -202,12 +215,12 @@ Follow these steps for adding a new SCA plugin to IBSCA.
 
 7. Rename the class to the plugin name. Use **Uppercase** letters.
 
-8. To initialize this plugin within your workflow, see **Inserting a Package**.
+8. To initialize this plugin within your workflow, see [**Inserting a Plugin**](#adding-a-new-plugin) .
 
   
   
 
-## Inserting a Package
+## Inserting a Plugin
 
   
 
@@ -233,24 +246,32 @@ Follow these steps to plug a package into IBSCA.
 
   ## Package Data
   Detailed descriptions of each element in a plugin's data file.
-|                   |DESCRIPTION                          |OPTIONS                         |EXAMPLES                         |
-|-------------------|-------------------------------------|--------------------------------|---------------------------------|
-|`pkg`			    |Title of plugin                      |**required**                    |`pkg : "Checkov"`                |
-|`version`          |Current version of plugin            |**recommended**                 |`version : "0.38.1"`             |
-|`command`          |cli command for plugin               |**recommended** `|` **required** if **args** below is non-empty   |`command : "checkov"` |
-|`args`             |Argument to check version of plugin  |**recommended**|`args : ["--version"]`|
+|                |DESCRIPTION                          |OPTIONS                         |EXAMPLES                         |
+|----------------|-------------------------------|-----------------------------|-----------------------------|
+|`pkg`			 |Title of plugin           |**required** |`pkg : "Checkov"`          |
+|`version`          |Current version of plugin           |**recommended**|`version : "0.38.1"`             |
+|`command`          |cli command for plugin|**recommended** `|` **required** if **args** below is non-empty|`command : "checkov"` |
+|`args`          |Argument to check version of plugin|**recommended**|`args : ["--version"]` |
 |`install`          |cli command used for installing plugin|**recommended**  `|`  **required** if **installCommands** below is non-empty|`install:  "brew"`|
-|`installCommands`  |Array of commands used when installing plugin |**recommended**|`["install", "checkov"]`|
-|`resource`         |Hyperlink for more information regarding plugin|**recommended**|`"https://www.checkov.io/1.Welcome/Quick%20Start.html"`|
-|`configType`       |File type for config file            |IBSCA currently supports `.yml`. `""` if no config available |`"yaml"`|
-|`configFile`       |File name of config                  |IBSCA currently supports `.yml`. `""` if no config available|`"config.yml"`|
-|`configDir`        |Directory for config file            |**required if using config**. This is from pulled github repo, path will always be: `"./customChecks/<language>/<plugin>/config/"`|`"./customChecks/terraform/checkov/config/"` see example for reference. |
-|`dirTitle`         |Selector used in config to invoke directory check|`""` if not using config.  If using config, this will be the selector from config file that tells command if search is a file search, or a directory search. |`"directory"`|
-|`fileTitle`        |Selector used in config to invoke file check|`""` if not using config.  If using config, this will be the selector from config file that tells command if search is a file search, or a directory search.|`"file"` |
-|`directorySearch`  |Boolean: Is directory search available?|**required**                   |directorySearch:  true           |
-|`fileCheck`        |Boolean: Is file search available?     |**required**                   |`fileCheck :  true`              |
+|`installCommands`          |Array of commands used when installing plugin |**recommended**|`["install", "checkov"]`|
+|`resource`          |Hyperlink for more information regarding plugin|**recommended**|`"https://www.checkov.io/1.Welcome/Quick%20Start.html"`|
+|`configType`          |File type for config file|IBSCA currently supports `.yml`. `""` if no config available |`"yaml"`|
+|`configFile`          |File name of config|IBSCA currently supports `.yml`. `""` if no config available|`"config.yml"`|
+|`configDir`          |Directory for config file|**required if using config**. This is from pulled github repo, path will always be: `"./customChecks/<language>/<plugin>/config/"`|`"./customChecks/terraform/checkov/config/"` see example for reference. |
+|`dirTitle`          |Selector used in config to invoke directory check|`""` if not using config.  If using config, this will be the selector from config file that tells command if search is a file search, or a directory search. |`"directory"`|
+|`fileTitle`          |Selector used in config to invoke file check|`""` if not using config.  If using config, this will be the selector from config file that tells command if search is a file search, or a directory search.|`"file"`|
+|`directorySearch`          |Boolean: Is directory search available?|**required**|directorySearch:  true |
+|`fileCheck`          |Boolean: Is file search available?|**required**|`fileCheck :  true`|
 
 
 ## Versioning
+
+  
+
 Follow the guide at [IBSCA Versioning Repository](https://github.com/Howl1935/homebrew-ibsca)
+
+
+
+
+
 
